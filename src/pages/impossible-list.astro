@@ -237,7 +237,8 @@ import Footer from '../components/Footer.astro';
   }
 
   .il-item {
-    display: flex;
+    display: grid;
+    grid-template-columns: 18px 1fr;
     align-items: flex-start;
     gap: 12px;
     font-size: 14px;
@@ -254,7 +255,7 @@ import Footer from '../components/Footer.astro';
     border-radius: 50%;
     border: 1.5px solid var(--color-border);
     flex-shrink: 0;
-    margin-top: 2px;
+    margin-top: 3px;
   }
 
   /* Done: checkmark replaces ::before */
