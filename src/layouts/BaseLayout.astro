@@ -1,6 +1,5 @@
 ---
 import '../styles/global.css';
-import { Analytics } from '@vercel/analytics/astro';
 
 interface Props {
   title?: string;
@@ -54,6 +53,6 @@ const ogImage = new URL(image, Astro.site);
   </head>
   <body>
     <slot />
-    <Analytics />
+    <script>import { inject } from '@vercel/analytics'; inject();</script>
   </body>
 </html>
