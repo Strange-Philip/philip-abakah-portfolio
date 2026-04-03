@@ -1,0 +1,275 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="The Impossible List — Philip Abakah"
+  description="A living list of things I'm working toward — across computer vision, vision science, and real-world systems."
+>
+  <Nav />
+  <main>
+    <div class="container">
+      <PageHeader
+        emoji="🌍"
+        title="The Impossible List"
+        subtitle="A living list of things I'm working toward — across computer vision, vision science, and real-world systems."
+      />
+
+      <div class="il-intro">
+        <p>
+          If you can help accelerate any of these, <a href="mailto:philipabakahmensah@gmail.com" class="body-link">reach out</a>.
+        </p>
+        <p class="il-updated">Last updated on <strong>April 2026</strong></p>
+      </div>
+
+      <div class="il-body">
+
+        <!-- Impact Goals -->
+        <section class="il-section">
+          <h2 class="il-heading"><span class="il-emoji">🧠</span> Impact Goals</h2>
+          <ul class="il-list">
+            <li class="il-item">Build systems that improve how humans perceive and interact with the world</li>
+            <li class="il-item">Help someone who is visually impaired navigate independently using <a href="/projects/safe-step" class="body-link body-link--internal">Safe Step</a> — in the real world</li>
+            <li class="il-item">Build technology used by 1,000,000+ users across healthcare, mobility, and perception</li>
+            <li class="il-item">Contribute to global accessibility AND medical AI systems</li>
+            <li class="il-item">Build tools that assist clinicians, not just patients</li>
+          </ul>
+        </section>
+
+        <!-- Research Goals -->
+        <section class="il-section">
+          <h2 class="il-heading"><span class="il-emoji">🔬</span> Research Goals</h2>
+          <ul class="il-list">
+            <li class="il-item">Publish research spanning Computer Vision × AI/ML × Ophthalmology</li>
+            <li class="il-item">Work with large-scale ophthalmic datasets (fundus, OCT, visual fields)</li>
+            <li class="il-item">Build models beyond classification → representation learning + multimodal systems</li>
+            <li class="il-item">Present at <a href="https://www.arvo.org" target="_blank" rel="noopener noreferrer" class="body-link">ARVO</a> (Association for Research in Vision and Ophthalmology)</li>
+            <li class="il-item">Contribute to or collaborate with <a href="https://www.nei.nih.gov" target="_blank" rel="noopener noreferrer" class="body-link">NEI</a> (National Eye Institute)-level research</li>
+            <li class="il-item">Earn <a href="https://www.aao.org" target="_blank" rel="noopener noreferrer" class="body-link">FAAO</a> (Fellow of the American Academy of Optometry)</li>
+            <li class="il-item">Reproduce and improve a state-of-the-art computer vision paper</li>
+            <li class="il-item">Open-source systems that others can build on</li>
+          </ul>
+        </section>
+
+        <!-- Engineering Goals -->
+        <section class="il-section">
+          <h2 class="il-heading"><span class="il-emoji">🧑🏾‍💻</span> Engineering Goals</h2>
+          <ul class="il-list">
+            <li class="il-item">Build real-world computer vision systems (not just models in notebooks)</li>
+            <li class="il-item">Develop systems across medical imaging, real-world environments, and multimodal inputs</li>
+            <li class="il-item">Become deeply strong in Computer Vision + AI/ML (theory + systems)</li>
+            <li class="il-item">Build systems that generalize across datasets and environments</li>
+          </ul>
+        </section>
+
+        <!-- Career Goals -->
+        <section class="il-section">
+          <h2 class="il-heading"><span class="il-emoji">🌍</span> Career Goals</h2>
+          <ul class="il-list">
+            <li class="il-item">Get into a top graduate program (Vision Science / AI / Biomedical Engineering)</li>
+            <li class="il-item">Become a Vision Scientist Engineer at Apple</li>
+            <li class="il-item">Work at the intersection of perception, hardware, and intelligence</li>
+            <li class="il-item">Build systems that reach global, real-world scale</li>
+          </ul>
+        </section>
+
+        <!-- Personal Growth -->
+        <section class="il-section">
+          <h2 class="il-heading"><span class="il-emoji">🧠</span> Personal Growth</h2>
+          <ul class="il-list">
+            <li class="il-item">Read deeply across AI, neuroscience, perception, and philosophy</li>
+            <li class="il-item">Become extremely strong at first-principles thinking</li>
+            <li class="il-item">Communicate complex ideas simply and clearly</li>
+            <li class="il-item">Document ideas, experiments, and learning publicly</li>
+          </ul>
+        </section>
+
+        <!-- Life Experiences -->
+        <section class="il-section">
+          <h2 class="il-heading"><span class="il-emoji">✈️</span> Life Experiences</h2>
+          <ul class="il-list">
+            <li class="il-item">Travel outside Ghana for research, collaboration, or conferences</li>
+            <li class="il-item">Attend and present at a global research conference</li>
+            <li class="il-item">Work with teams solving high-impact scientific problems</li>
+          </ul>
+        </section>
+
+        <!-- Experiments -->
+        <section class="il-section">
+          <h2 class="il-heading"><span class="il-emoji">🧪</span> Experiments</h2>
+          <ul class="il-list">
+            <li class="il-item">Build and ship a project in 7 days (end-to-end)</li>
+            <li class="il-item">Ship something publicly every month for 6 months</li>
+            <li class="il-item">Explore one new research idea every week</li>
+            <li class="il-item">Test and validate 10+ ideas within 30 days</li>
+          </ul>
+        </section>
+
+        <!-- Wild Ideas -->
+        <section class="il-section">
+          <h2 class="il-heading"><span class="il-emoji">⚡</span> Wild Ideas</h2>
+          <ul class="il-list">
+            <li class="il-item">Build a generalist vision model for ophthalmology (multi-task, multimodal)</li>
+            <li class="il-item">Create systems that infer unseen structure/function from images</li>
+            <li class="il-item">Build tools that augment human perception beyond biological limits</li>
+            <li class="il-item">Contribute to systems that move toward a digital understanding of vision</li>
+          </ul>
+        </section>
+
+        <!-- Bucket List -->
+        <section class="il-section">
+          <h2 class="il-heading"><span class="il-emoji">🌱</span> Bucket List</h2>
+          <ul class="il-list">
+            <li class="il-item">Attend an Apple Event (WWDC or product launch)</li>
+            <li class="il-item">Visit New York City</li>
+            <li class="il-item">Visit Silicon Valley</li>
+            <li class="il-item">Visit Apple Park</li>
+            <li class="il-item">Travel outside Ghana for the first time</li>
+          </ul>
+        </section>
+
+        <!-- Done -->
+        <section class="il-section il-section--done">
+          <h2 class="il-heading"><span class="il-emoji">🏁</span> Done</h2>
+          <ul class="il-list">
+            <li class="il-item il-item--done">
+              <span class="il-check" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#34d399"/><path d="M5 9.5 L7.5 12 L13 6.5" stroke="#09090b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              Worked at a global AI company building accessibility tools — <a href="https://www.letsenvision.com/" target="_blank" rel="noopener noreferrer" class="body-link">Envision Technologies</a>
+            </li>
+            <li class="il-item il-item--done">
+              <span class="il-check" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#34d399"/><path d="M5 9.5 L7.5 12 L13 6.5" stroke="#09090b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              Built real-world AI systems — <a href="/projects/safe-step" class="body-link body-link--internal">Safe Step</a>, <a href="/projects/eyedxai" class="body-link body-link--internal">EyeDxAI</a>
+            </li>
+            <li class="il-item il-item--done">
+              <span class="il-check" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#34d399"/><path d="M5 9.5 L7.5 12 L13 6.5" stroke="#09090b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              Combined optometry + machine learning into actual products
+            </li>
+          </ul>
+        </section>
+
+      </div>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  main { min-height: calc(100vh - 80px); }
+
+  .il-intro {
+    text-align: center;
+    max-width: 480px;
+    margin-inline: auto;
+    margin-bottom: 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .il-intro p {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  .il-updated {
+    font-size: 13px !important;
+    color: var(--color-text-mute) !important;
+  }
+
+  .il-updated strong {
+    color: var(--color-text-secondary);
+    font-weight: 600;
+  }
+
+  .il-body {
+    max-width: 600px;
+    margin-inline: auto;
+    padding-bottom: 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .il-section {
+    border-bottom: 1px dashed var(--color-border);
+    padding-bottom: 36px;
+    margin-bottom: 36px;
+  }
+
+  .il-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  .il-heading {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .il-emoji {
+    font-size: 15px;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .il-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .il-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  /* Incomplete: circle bullet */
+  .il-item:not(.il-item--done)::before {
+    content: '';
+    display: block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-border);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* Done: checkmark replaces ::before */
+  .il-item--done {
+    color: var(--color-text-tertiary);
+  }
+
+  .il-check {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-top: 0px;
+  }
+
+  .il-section--done .il-heading {
+    color: var(--color-accent);
+  }
+</style>
