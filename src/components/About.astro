@@ -1,0 +1,170 @@
+---
+---
+
+<section id="about" class="section about-section" aria-label="About Philip">
+  <div class="container about-inner">
+
+    <!-- Left: Bio -->
+    <div class="about-text">
+      <p class="section-label">🧠 About</p>
+      <h2 class="section-title">Vision × AI × Real-world systems</h2>
+
+      <div class="bio-paragraphs">
+        <p>
+          I'm a Doctor of Optometry and software engineer focused on assistive AI and computer vision.
+          My clinical training at the University of Cape Coast Eye Clinic and Permeff Eye Care gave me
+          direct experience with the full spectrum of ocular conditions — and a precise understanding
+          of how visual impairment shapes real lives.
+        </p>
+        <p>
+          That clinical lens shapes how I build technology. At <a href="https://www.ally.me" target="_blank" rel="noopener noreferrer">Envision Technologies</a>,
+          I work on Ally — an AI accessibility platform for over 100,000 blind and low vision users.
+          The work demands that accessibility be infrastructure: reliable, fast, and unambiguous
+          for users who have no visual fallback.
+        </p>
+        <p>
+          My core research is Safe Step — an assistive navigation system combining obstacle detection,
+          path segmentation, and voice feedback for independent outdoor navigation. The goal is
+          real-world performance, not benchmark performance.
+        </p>
+      </div>
+    </div>
+
+    <!-- Right: Callout + Details -->
+    <aside class="about-callout">
+      <blockquote class="philosophy-quote">
+        <p>Accessibility is not a feature.<br />It is infrastructure.</p>
+        <footer>— Philip Abakah</footer>
+      </blockquote>
+
+      <div class="about-details">
+        <div class="detail-row">
+          <span class="detail-key">📍 Location</span>
+          <span class="detail-val">Accra, Ghana</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">🎓 Education</span>
+          <span class="detail-val">Doctor of Optometry — UCC</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">💼 Currently</span>
+          <span class="detail-val">Software Engineer @ Envision</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">🔬 Research</span>
+          <span class="detail-val">Assistive nav, CV, glaucoma AI</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">🎯 Interests</span>
+          <span class="detail-val">F1, illustration, painting, cooking</span>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .about-section {
+    background: var(--color-bg-secondary);
+    border-top: 1px solid var(--color-border-soft);
+    border-bottom: 1px solid var(--color-border-soft);
+  }
+
+  .about-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  @media (min-width: 1024px) {
+    .about-inner {
+      grid-template-columns: 3fr 2fr;
+      gap: 72px;
+    }
+  }
+
+  .bio-paragraphs {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .bio-paragraphs p {
+    font-size: 15px;
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+  }
+
+  .bio-paragraphs a {
+    color: var(--color-accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(96, 165, 250, 0.3);
+    transition: border-color 0.15s ease;
+  }
+
+  .bio-paragraphs a:hover { border-color: var(--color-accent); }
+
+  /* Callout */
+  .about-callout {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .philosophy-quote {
+    border-left: 2px solid var(--color-accent);
+    padding-left: 18px;
+    margin: 0;
+  }
+
+  .philosophy-quote p {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.55;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+  }
+
+  .philosophy-quote footer {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-text-mute);
+  }
+
+  /* Details card */
+  .about-details {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+  }
+
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--color-border-soft);
+  }
+
+  .detail-row:last-child { border-bottom: none; }
+
+  .detail-key {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-text-tertiary);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .detail-val {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    text-align: right;
+    line-height: 1.4;
+  }
+</style>

@@ -1,0 +1,355 @@
+---
+import { getCollection, render } from 'astro:content';
+import ProjectLayout from '../../layouts/ProjectLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { title, tagline, image, imageAlt, tags, metrics, links, recognition, year, status } =
+  project.data;
+
+const { Content } = await render(project);
+
+const statusConfig: Record<string, { label: string; cls: string }> = {
+  live:          { label: '● Live',        cls: 'status-live' },
+  'in-progress': { label: '◐ In Progress', cls: 'status-progress' },
+  research:      { label: '◈ Research',    cls: 'status-research' },
+  archived:      { label: '○ Archived',    cls: 'status-archived' },
+};
+
+const s = statusConfig[status] ?? { label: status, cls: '' };
+---
+
+<ProjectLayout title={title} description={tagline} image={image}>
+  <Nav />
+
+  <main class="project-page">
+    <div class="container back-wrap">
+      <a href="/works" class="back-link">← All Work</a>
+    </div>
+
+    {image && (
+      <div class="project-hero-image">
+        <div class="container">
+          <img
+            src={image}
+            alt={imageAlt || title}
+            width="1100"
+            height="620"
+            loading="eager"
+            class="hero-img"
+          />
+        </div>
+      </div>
+    )}
+
+    <!-- Header -->
+    <div class="container project-header">
+      <div class="header-meta">
+        <span class={`project-status ${s.cls}`}>{s.label}</span>
+        <span class="project-year">{year}</span>
+      </div>
+      <h1 class="project-title">{title}</h1>
+      <p class="project-tagline">{tagline}</p>
+      <div class="project-tags">
+        {tags.map((tag) => <span class="tag">{tag}</span>)}
+      </div>
+    </div>
+
+    <!-- Meta row -->
+    {(metrics || links || recognition) && (
+      <div class="container project-meta-row">
+        {metrics && metrics.length > 0 && (
+          <div class="meta-block">
+            <p class="meta-label">📊 Metrics</p>
+            <dl class="metrics-grid">
+              {metrics.map((m) => (
+                <div class="metric-cell">
+                  <dt class="metric-dt">{m.label}</dt>
+                  <dd class="metric-dd">{m.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        )}
+
+        {links && Object.values(links).some(Boolean) && (
+          <div class="meta-block">
+            <p class="meta-label">🔗 Links</p>
+            <div class="links-list">
+              {links.github && <a href={links.github} target="_blank" rel="noopener noreferrer" class="project-link">GitHub →</a>}
+              {links.live   && <a href={links.live}   target="_blank" rel="noopener noreferrer" class="project-link">Live Site →</a>}
+              {links.demo   && <a href={links.demo}   target="_blank" rel="noopener noreferrer" class="project-link">View Demo →</a>}
+              {links.paper  && <a href={links.paper}  target="_blank" rel="noopener noreferrer" class="project-link">Read Paper →</a>}
+            </div>
+          </div>
+        )}
+
+        {recognition && recognition.length > 0 && (
+          <div class="meta-block">
+            <p class="meta-label">🏆 Recognition</p>
+            <ul class="recognition-list">
+              {recognition.map((r) => <li>{r}</li>)}
+            </ul>
+          </div>
+        )}
+      </div>
+    )}
+
+    <!-- Body content -->
+    <div class="container project-body">
+      <div class="prose">
+        <Content />
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</ProjectLayout>
+
+<style>
+  .project-page {
+    padding-top: 80px;
+    padding-bottom: 96px;
+  }
+
+  .back-wrap { padding-block: 28px; }
+
+  .back-link {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-mute);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .back-link:hover { color: var(--color-text-secondary); }
+
+  /* Hero image */
+  .project-hero-image { margin-bottom: 44px; }
+
+  .hero-img {
+    width: 100%;
+    max-height: 480px;
+    object-fit: cover;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-border-soft);
+  }
+
+  /* Header */
+  .project-header { margin-bottom: 36px; }
+
+  .header-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .project-status {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
+    letter-spacing: 0.02em;
+  }
+
+  .status-live     { background: rgba(74,222,128,0.15); color: #4ade80; border: 1px solid rgba(74,222,128,0.25); }
+  .status-progress { background: rgba(96,165,250,0.15); color: #60a5fa; border: 1px solid rgba(96,165,250,0.25); }
+  .status-research { background: rgba(251,191,36,0.12); color: #fbbf24; border: 1px solid rgba(251,191,36,0.2); }
+  .status-archived { background: rgba(113,113,122,0.2); color: #71717a;  border: 1px solid rgba(113,113,122,0.3); }
+
+  .project-year {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-text-mute);
+  }
+
+  .project-title {
+    font-family: var(--font-display);
+    font-size: clamp(30px, 5vw, 48px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+    margin-bottom: 10px;
+    line-height: 1.1;
+  }
+
+  .project-tagline {
+    font-size: 18px;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+    margin-bottom: 18px;
+  }
+
+  .project-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  /* Meta row */
+  .project-meta-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+    margin-bottom: 52px;
+    padding-block: 28px;
+    border-top: 1px solid var(--color-border-soft);
+    border-bottom: 1px solid var(--color-border-soft);
+  }
+
+  @media (min-width: 768px) {
+    .project-meta-row { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+  }
+
+  .meta-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-mute);
+    margin-bottom: 12px;
+  }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 1px;
+    background: var(--color-border-soft);
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .metric-cell { background: var(--color-bg); padding: 10px 12px; }
+
+  .metric-dt {
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--color-text-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  .metric-dd {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text);
+    display: block;
+  }
+
+  .links-list {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .project-link {
+    font-size: 13px;
+    color: var(--color-accent);
+    font-weight: 500;
+    transition: opacity 0.15s ease;
+  }
+
+  .project-link:hover { opacity: 0.75; }
+
+  .recognition-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .recognition-list li {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.4;
+  }
+
+  .recognition-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--color-text-mute);
+  }
+
+  /* Prose */
+  .project-body { max-width: 700px; }
+
+  .prose :global(h2) {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    margin-top: 44px;
+    margin-bottom: 14px;
+  }
+
+  .prose :global(h3) {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-top: 30px;
+    margin-bottom: 10px;
+  }
+
+  .prose :global(p) {
+    font-size: 15px;
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+    margin-bottom: 18px;
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin-bottom: 18px;
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .prose :global(li) {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+    margin-bottom: 7px;
+    padding-left: 18px;
+    position: relative;
+  }
+
+  .prose :global(ul li::before) {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--color-text-mute);
+  }
+
+  .prose :global(strong) { font-weight: 600; color: var(--color-text); }
+
+  .prose :global(a) {
+    color: var(--color-accent);
+    border-bottom: 1px solid rgba(96,165,250,0.3);
+  }
+
+  .prose :global(a:hover) { border-color: var(--color-accent); }
+
+  .prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border-soft);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--color-text);
+  }
+</style>

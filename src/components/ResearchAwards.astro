@@ -1,0 +1,196 @@
+---
+---
+
+<section id="research" class="section" aria-label="Research and recognition">
+  <div class="container">
+    <p class="section-label">📚 Research & Recognition</p>
+    <h2 class="section-title">Publications & Awards</h2>
+
+    <div class="research-grid">
+      <!-- Left column -->
+      <div class="col">
+        <h3 class="col-heading">Research</h3>
+
+        <div class="pub-card">
+          <div class="pub-icon">📄</div>
+          <div>
+            <a
+              href="https://gricghana.org/automating-glaucoma-diagnosis-using-artificial-intelligence/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="pub-title"
+            >
+              Automating glaucoma diagnosis using artificial intelligence
+            </a>
+            <div class="pub-meta">
+              <span class="pub-venue">Ghana Research & Industry Collaborative</span>
+              <span class="pub-year">2024</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        <h3 class="col-heading">🏆 Awards</h3>
+        <ul class="list-rows">
+          <li>
+            <span class="row-primary">Caraham Ophthalmics Prize for Innovation</span>
+            <span class="row-secondary">2025</span>
+          </li>
+          <li>
+            <span class="row-primary">Most Promising Student — OSAG UCC</span>
+            <span class="row-secondary">2025</span>
+          </li>
+          <li>
+            <span class="row-primary">GNPC Scholar</span>
+            <span class="row-secondary">2020–2023</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Right column -->
+      <div class="col">
+        <h3 class="col-heading">🎓 Certifications</h3>
+        <ul class="list-rows">
+          <li>
+            <span class="row-primary">IBM Data Fundamentals</span>
+            <span class="row-secondary">2025</span>
+          </li>
+          <li>
+            <span class="row-primary">AI Career Essentials — ALX Africa</span>
+            <span class="row-secondary">2024</span>
+          </li>
+          <li>
+            <span class="row-primary">Python & R Workshop — AIMS Rwanda</span>
+            <span class="row-secondary">2025</span>
+          </li>
+          <li>
+            <span class="row-primary">Flutter Development — Simplilearn</span>
+            <span class="row-secondary">2022</span>
+          </li>
+        </ul>
+
+        <div class="divider"></div>
+        <h3 class="col-heading">🌟 Leadership</h3>
+        <ul class="list-rows">
+          <li>
+            <span class="row-primary">Mobile Dev Team Lead</span>
+            <span class="row-secondary">Slightly Techie Network</span>
+          </li>
+          <li>
+            <span class="row-primary">Flutter Instructor</span>
+            <span class="row-secondary">Google Dev Club, UCC</span>
+          </li>
+          <li>
+            <span class="row-primary">Exhibition Team</span>
+            <span class="row-secondary">Women in Vision Ghana</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .research-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  @media (min-width: 768px) {
+    .research-grid { grid-template-columns: repeat(2, 1fr); gap: 64px; }
+  }
+
+  .col-heading {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-mute);
+    margin-bottom: 18px;
+  }
+
+  /* Publication card */
+  .pub-card {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    padding: 16px;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-lg);
+  }
+
+  .pub-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+
+  .pub-title {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text);
+    text-decoration: none;
+    line-height: 1.45;
+    margin-bottom: 8px;
+    transition: color 0.15s ease;
+  }
+
+  .pub-title:hover { color: var(--color-accent); }
+
+  .pub-meta {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .pub-venue {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+  }
+
+  .pub-year {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-text-mute);
+    background: var(--color-bg-card);
+    padding: 2px 7px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border-soft);
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--color-border-soft);
+    margin-block: 24px;
+  }
+
+  /* List rows */
+  .list-rows {
+    list-style: none;
+  }
+
+  .list-rows li {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    padding-block: 10px;
+    border-bottom: 1px solid var(--color-border-soft);
+  }
+
+  .list-rows li:last-child { border-bottom: none; }
+
+  .row-primary {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+  }
+
+  .row-secondary {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-text-mute);
+    white-space: nowrap;
+  }
+</style>

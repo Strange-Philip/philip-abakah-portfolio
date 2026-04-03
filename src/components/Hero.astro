@@ -1,0 +1,136 @@
+---
+---
+
+<section class="hero" aria-label="Introduction">
+  <div class="container hero-inner">
+    <!-- Portrait photo — 3:4 -->
+    <div class="hero-photo-wrap animate-fade-in animate-delay-1">
+      <img
+        src="/images/profile.jpg"
+        alt="Philip Abakah"
+        width="360"
+        height="480"
+        loading="eager"
+        class="hero-photo"
+      />
+    </div>
+
+    <!-- Summary -->
+    <div class="hero-content">
+      <p class="hero-greeting animate-fade-in animate-delay-2">Hi 👋</p>
+      <h1 class="hero-name animate-fade-in animate-delay-2">Philip Abakah</h1>
+
+      <ul class="hero-list animate-fade-in animate-delay-3">
+        <li>👨🏾‍⚕️ Optometrist &amp; Software Engineer</li>
+        <li>🤖 Building in AI/ML and Computer Vision</li>
+        <li>💼 Ex Software Engineer  @<a href="https://www.letsenvision.com/" target="_blank" rel="noopener noreferrer" class="body-link">Envision Technologies</a></li>
+        <li>🔬 Research and Development - <a href="/works" class="body-link body-link--internal">Safe Step</a></li>
+        <li>🏎️ F1 enthusiast &amp; telemetry tinkerer</li>
+        <li>📍 Accra, Ghana</li>
+        <li>📄 No time to peruse ? <a href="/Philip_Abakah_CV.pdf" target="_blank" rel="noopener noreferrer" class="body-link">Grab my CV</a></li>
+      </ul>
+
+      <div class="hero-ctas animate-fade-in animate-delay-4">
+        <a href="/about" class="btn btn-ghost hero-btn">More about me →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-top: 56px;
+    padding-bottom: 48px;
+  }
+
+  .hero-inner {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+  }
+
+  /* Photo — 3:4 portrait */
+  .hero-photo-wrap {
+    flex-shrink: 0;
+    width: 280px;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    border: 1px solid var(--color-border-soft);
+  }
+
+  .hero-photo {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  /* Text */
+  .hero-greeting {
+    font-family: var(--font-hand);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--color-text-secondary);
+    margin-bottom: 2px;
+  }
+
+  .hero-name {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4vw, 36px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+    margin-bottom: 24px;
+    line-height: 1.1;
+  }
+
+  /* Emoji list */
+  .hero-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .hero-list li {
+    font-size: 15px;
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 10px;
+  }
+
+  .hero-btn {
+    padding: 7px 16px;
+    font-size: 13px;
+    height: 36px;
+    border-radius: var(--radius-md);
+  }
+
+  /* Mobile: stack */
+  @media (max-width: 768px) {
+    .hero-inner {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero-photo-wrap {
+      width: 180px;
+    }
+
+    .hero-list {
+      text-align: left;
+      max-width: 340px;
+    }
+
+    .hero-ctas {
+      justify-content: center;
+    }
+  }
+</style>

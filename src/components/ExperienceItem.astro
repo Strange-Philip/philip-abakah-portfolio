@@ -1,0 +1,135 @@
+---
+interface Props {
+  role: string;
+  org: string;
+  orgUrl?: string;
+  period: string;
+  bullets: string[];
+  isLast?: boolean;
+}
+
+const { role, org, orgUrl, period, bullets, isLast = false } = Astro.props;
+---
+
+<div class={`exp-item ${isLast ? 'exp-item--last' : ''}`}>
+  <div class="exp-timeline">
+    <div class="exp-dot"></div>
+    {!isLast && <div class="exp-line"></div>}
+  </div>
+
+  <div class="exp-content">
+    <div class="exp-header">
+      <div>
+        <h3 class="exp-role">{role}</h3>
+        {
+          orgUrl ? (
+            <a href={orgUrl} target="_blank" rel="noopener noreferrer" class="exp-org exp-org-link">
+              {org}
+            </a>
+          ) : (
+            <span class="exp-org">{org}</span>
+          )
+        }
+      </div>
+      <span class="exp-period">{period}</span>
+    </div>
+
+    <ul class="exp-bullets">
+      {bullets.map((b) => <li>{b}</li>)}
+    </ul>
+  </div>
+</div>
+
+<style>
+  .exp-item {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 0 20px;
+    padding-bottom: 36px;
+  }
+
+  .exp-item--last { padding-bottom: 0; }
+
+  .exp-timeline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5px;
+  }
+
+  .exp-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    box-shadow: 0 0 8px rgba(52, 211, 153, 0.5);
+    flex-shrink: 0;
+  }
+
+  .exp-line {
+    width: 1px;
+    flex: 1;
+    background: var(--color-border-soft);
+    margin-top: 8px;
+  }
+
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+
+  .exp-role {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+    margin-bottom: 3px;
+  }
+
+  .exp-org {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+  }
+
+  .exp-org-link {
+    color: var(--color-accent);
+    transition: opacity 0.15s ease;
+  }
+
+  .exp-org-link:hover { opacity: 0.75; }
+
+  .exp-period {
+    font-weight: 500;
+    font-size: 11px;
+    color: var(--color-text-mute);
+    white-space: nowrap;
+    padding-top: 2px;
+  }
+
+  .exp-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .exp-bullets li {
+    font-size: 13px;
+    color: var(--color-text-tertiary);
+    line-height: 1.55;
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .exp-bullets li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--color-text-mute);
+  }
+</style>

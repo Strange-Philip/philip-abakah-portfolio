@@ -1,0 +1,87 @@
+---
+interface Props {
+  number: string;
+  title: string;
+  bullets: string[];
+  emoji?: string;
+}
+
+const { number, title, bullets, emoji = '' } = Astro.props;
+---
+
+<div class="skill-area">
+  <div class="skill-header">
+    {emoji && <span class="skill-emoji">{emoji}</span>}
+    <span class="skill-number">{number}</span>
+  </div>
+  <h3 class="skill-title">{title}</h3>
+  <ul class="skill-list">
+    {bullets.map((item) => <li class="skill-item">{item}</li>)}
+  </ul>
+</div>
+
+<style>
+  .skill-area {
+    padding: 20px;
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-xl);
+    background: var(--color-bg-secondary);
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .skill-area:hover {
+    border-color: var(--color-border);
+    background: var(--color-bg-card);
+  }
+
+  .skill-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .skill-emoji {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .skill-number {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--color-text-mute);
+    letter-spacing: 0.08em;
+  }
+
+  .skill-title {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+    margin-bottom: 14px;
+    line-height: 1.35;
+  }
+
+  .skill-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .skill-item {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    line-height: 1.4;
+    padding-left: 12px;
+    position: relative;
+  }
+
+  .skill-item::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--color-text-mute);
+  }
+</style>

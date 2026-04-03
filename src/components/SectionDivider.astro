@@ -1,0 +1,55 @@
+---
+/**
+ * Vyshnav-style section header: LABEL -------- View all
+ * Mono label on left, dashed line fills the middle, optional link on right.
+ */
+interface Props {
+  label: string;
+  href?: string;
+  linkText?: string;
+}
+
+const { label, href, linkText = 'View all' } = Astro.props;
+---
+
+<div class="section-divider">
+  <span class="divider-label">{label}</span>
+  <span class="divider-line" aria-hidden="true"></span>
+  {href && <a href={href} class="divider-link">{linkText}</a>}
+</div>
+
+<style>
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .divider-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-mute);
+    white-space: nowrap;
+    font-weight: 600;
+  }
+
+  .divider-line {
+    flex: 1;
+    height: 0;
+    border-top: 1px dashed var(--color-border);
+  }
+
+  .divider-link {
+    font-size: 13px;
+    color: var(--color-text-tertiary);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.15s ease;
+  }
+
+  .divider-link:hover {
+    color: var(--color-text);
+  }
+</style>

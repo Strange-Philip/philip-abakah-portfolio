@@ -1,0 +1,101 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="Now — Philip Abakah" description="An update on my present focus, work, and interests.">
+  <Nav />
+  <main>
+    <div class="container">
+      <PageHeader
+        emoji="🌱"
+        title="Now"
+        subtitle="An update on my present focus, work, and interests"
+      />
+
+      <div class="now-badge-wrap">
+        <span class="live-badge">
+          <span class="live-dot" aria-hidden="true"></span>
+          LIVE
+        </span>
+      </div>
+
+      <ul class="now-list">
+        <li>💻 Ex Software Engineer @ <a href="https://www.letsenvision.com/" target="_blank" rel="noopener noreferrer" class="body-link">Envision Technologies</a> (March 2026)</li>
+        <li>🏥 Intern Optometrist @Permeff Eye Care , Accra Ghana</li>
+        <li>🤖 Building in AI/ML and Computer Vision</li>
+        <li>🔬 Researching and developing <a href="https://github.com/Strange-Philip/safe_step" target="_blank" rel="noopener noreferrer" class="body-link">Safe Step</a></li>
+        <li>🏎️ Following Formula One &amp; tinkering with telemetry data</li>
+        <li>📍 Living in Accra, Ghana</li>
+      </ul>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  main {
+    min-height: calc(100vh - 80px);
+  }
+
+  .now-badge-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+
+  .live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: #f87171;
+    background: rgba(248, 113, 113, 0.1);
+    border: 1px solid rgba(248, 113, 113, 0.25);
+    padding: 5px 14px;
+    border-radius: var(--radius-full);
+  }
+
+  .live-dot {
+    position: relative;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #f87171;
+  }
+
+  .live-dot::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: rgba(248, 113, 113, 0.5);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 0; transform: scale(0.8); }
+    50%      { opacity: 1; transform: scale(1.3); }
+  }
+
+  .now-list {
+    list-style: none;
+    max-width: 500px;
+    margin-inline: auto;
+    padding-bottom: 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .now-list li {
+    font-size: 15px;
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+  }
+
+</style>

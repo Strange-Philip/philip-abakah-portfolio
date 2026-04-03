@@ -1,0 +1,127 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import SectionDivider from './SectionDivider.astro';
+
+interface Props {
+  projects: CollectionEntry<'projects'>[];
+}
+
+const { projects } = Astro.props;
+
+const statusDot: Record<string, string> = {
+  live: '#4ade80',
+  'in-progress': '#60a5fa',
+  research: '#fbbf24',
+  archived: '#71717a',
+};
+---
+
+<section class="worklist-section" aria-label="Selected work">
+  <div class="container">
+    <SectionDivider label="Works" href="/works" />
+
+    <ul class="worklist" role="list">
+      {projects.map((p) => (
+        <li>
+          <a href={`/projects/${p.slug}`} class="worklist-row">
+            <span class="row-dot" style={`background: ${statusDot[p.data.status] ?? '#71717a'}`} aria-hidden="true"></span>
+            <span class="row-title">{p.data.title}</span>
+            <span class="row-tagline">{p.data.tagline}</span>
+            <span class="row-year">{p.data.year}</span>
+            <span class="row-arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .worklist-section {
+    padding-bottom: 64px;
+  }
+
+  .worklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .worklist-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--color-border-soft);
+    text-decoration: none;
+    transition: background 0.15s ease;
+    margin: 0 -12px;
+    padding-inline: 12px;
+    border-radius: var(--radius-md);
+  }
+
+  .worklist li:last-child .worklist-row {
+    border-bottom: none;
+  }
+
+  .worklist-row:hover {
+    background: var(--color-bg-secondary);
+  }
+
+  .row-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .row-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-text);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .row-tagline {
+    font-size: 13px;
+    color: var(--color-text-mute);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .row-year {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-text-mute);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .row-arrow {
+    font-size: 14px;
+    color: var(--color-text-mute);
+    flex-shrink: 0;
+    transition: transform 0.15s ease, color 0.15s ease;
+  }
+
+  .worklist-row:hover .row-arrow {
+    transform: translateX(3px);
+    color: var(--color-text-secondary);
+  }
+
+  .worklist-row:hover .row-title {
+    color: var(--color-text);
+  }
+
+  /* Mobile: hide tagline, keep it tight */
+  @media (max-width: 640px) {
+    .row-tagline {
+      display: none;
+    }
+  }
+</style>

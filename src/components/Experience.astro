@@ -1,0 +1,78 @@
+---
+import ExperienceItem from './ExperienceItem.astro';
+
+const experiences = [
+  {
+    role: 'Software Engineer',
+    org: 'Envision Technologies B.V.',
+    orgUrl: '"https://www.letsenvision.com/"',
+    period: 'Oct 2024 — Mar 2026',
+    bullets: [
+      'Building Ally, an AI-powered accessibility platform for 100,000+ blind and low vision users',
+      'Developed accessible conversational AI systems with voice and keyboard-first interaction',
+      'Contributed to web platform deployed in SF museum pilots — 100% user satisfaction',
+      'Reduced user dependency on human assistance through AI-driven audio description',
+    ],
+  },
+  {
+    role: 'Intern Optometrist',
+    org: 'Permeff Eye Care, Accra',
+    period: 'Aug 2024 — Oct 2025',
+    bullets: [
+      'Contact lens fitting and keratometry for clinical patients',
+      'OCT and visual field testing for glaucoma assessment and monitoring',
+      'Managed complex ocular disease cases under clinical supervision',
+    ],
+  },
+  {
+    role: 'Intern Optometrist',
+    org: 'University of Cape Coast Eye Clinic',
+    period: 'Sep 2023 — Aug 2025',
+    bullets: [
+      'Conducted full comprehensive eye examinations across patient demographics',
+      'Managed real patient cases from intake through diagnosis and treatment planning',
+      'Applied clinical reasoning across refractive, binocular, and ocular disease presentations',
+    ],
+  },
+  {
+    role: 'Project Manager & Software Engineer',
+    org: 'Anidaso Eye Centre',
+    period: 'Mar 2022 — Jun 2023',
+    bullets: [
+      'Built Hunu, a telemedicine app for rural vision screening and remote diagnosis',
+      'Designed the system for non-clinician use — enabling visual acuity testing without a specialist',
+      'Extended the clinic\'s screening capacity to rural communities beyond its catchment area',
+    ],
+  },
+];
+---
+
+<section id="experience" class="section experience-section" aria-label="Experience">
+  <div class="container">
+    <p class="section-label">💼 Experience</p>
+    <h2 class="section-title">Where I've Worked</h2>
+
+    <div class="experience-list">
+      {experiences.map((exp, i) => (
+        <ExperienceItem
+          role={exp.role}
+          org={exp.org}
+          orgUrl={exp.orgUrl}
+          period={exp.period}
+          bullets={exp.bullets}
+          isLast={i === experiences.length - 1}
+        />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .experience-section {
+    background: var(--color-bg-secondary);
+    border-top: 1px solid var(--color-border-soft);
+    border-bottom: 1px solid var(--color-border-soft);
+  }
+
+  .experience-list { max-width: 680px; }
+</style>

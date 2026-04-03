@@ -1,0 +1,106 @@
+---
+import SkillArea from './SkillArea.astro';
+
+const capabilities = [
+  {
+    number: '01',
+    emoji: '👁️',
+    title: 'Vision Systems & Clinical Intelligence',
+    bullets: [
+      'Functional knowledge of the human visual system',
+      'Clinical reasoning in ocular diagnosis',
+      'Mapping visual impairments to engineering requirements',
+      'Assistive navigation and environmental interpretation',
+    ],
+  },
+  {
+    number: '02',
+    emoji: '🤖',
+    title: 'Machine Learning & Perception Systems',
+    bullets: [
+      'Object detection and scene understanding',
+      'Real-time inference and spatial awareness',
+      'Depth estimation and object tracking',
+      'TensorFlow, PyTorch, MediaPipe, YOLO',
+    ],
+  },
+  {
+    number: '03',
+    emoji: '♿',
+    title: 'Assistive Intelligence Systems',
+    bullets: [
+      'Navigation systems for visually impaired users',
+      'Obstacle detection and path prediction',
+      'Multimodal feedback: voice + spatial cues',
+      'Cognitive load and latency constraints',
+    ],
+  },
+  {
+    number: '04',
+    emoji: '📱',
+    title: 'Software & Product Systems',
+    bullets: [
+      'Flutter for mobile + web (accessibility-first)',
+      'FastAPI for model serving and backend APIs',
+      'Firebase, REST, GraphQL',
+      'On-device inference and screen reader compat.',
+    ],
+  },
+  {
+    number: '05',
+    emoji: '🔬',
+    title: 'Research & Experimental Design',
+    bullets: [
+      'Mixed-method research (quant + qual)',
+      'Metrics: accuracy, latency, task completion',
+      'User confidence and usability testing',
+      'Real-world data collection and tracking',
+    ],
+  },
+  {
+    number: '06',
+    emoji: '⚡',
+    title: 'Systems Thinking',
+    bullets: [
+      'End-to-end: data → model → interface → user',
+      'Tradeoff and failure mode analysis',
+      'Designing for unpredictability',
+      'Real-world over benchmark performance',
+    ],
+  },
+];
+---
+
+<section id="skills" class="section" aria-label="Capabilities">
+  <div class="container">
+    <p class="section-label">⚡ Capabilities</p>
+    <h2 class="section-title">What I Build With</h2>
+
+    <div class="skills-grid">
+      {capabilities.map((cap) => (
+        <SkillArea
+          number={cap.number}
+          title={cap.title}
+          bullets={cap.bullets}
+          emoji={cap.emoji}
+        />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  @media (min-width: 640px) {
+    .skills-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (min-width: 1024px) {
+    .skills-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>

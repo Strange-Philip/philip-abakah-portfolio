@@ -1,0 +1,62 @@
+---
+interface Props {
+  emoji: string;
+  title: string;
+  subtitle?: string;
+}
+
+const { emoji, title, subtitle } = Astro.props;
+---
+
+<div class="page-header">
+  <h1 class="page-title">
+    <span class="sparkle" aria-hidden="true">✧</span>
+    <span class="title-emoji">{emoji}</span>
+    <span class="title-text">{title}</span>
+    <span class="sparkle" aria-hidden="true">✧</span>
+  </h1>
+  {subtitle && <p class="page-subtitle">{subtitle}</p>}
+</div>
+
+<style>
+  .page-header {
+    text-align: center;
+    padding-top: 120px;
+    padding-bottom: 48px;
+  }
+
+  .page-title {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .sparkle {
+    font-size: 11px;
+    color: var(--color-text-mute);
+    user-select: none;
+  }
+
+  .title-emoji {
+    font-size: 28px;
+    line-height: 1;
+  }
+
+  .title-text {
+    font-family: var(--font-hand);
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--color-text);
+    letter-spacing: 0.01em;
+  }
+
+  .page-subtitle {
+    font-size: 14px;
+    color: var(--color-text-tertiary);
+    max-width: 340px;
+    margin-inline: auto;
+    line-height: 1.55;
+  }
+</style>
