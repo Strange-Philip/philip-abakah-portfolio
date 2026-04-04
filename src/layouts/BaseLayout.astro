@@ -69,7 +69,160 @@ const ogImage = new URL(image, Astro.site);
   </head>
   <body>
     <a href="#main-content" class="skip-link">Skip to content</a>
+
+    <!-- Hidden SVG color blindness filter definitions -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute" aria-hidden="true">
+      <defs>
+        <filter id="cvd-deuteranopia">
+          <feColorMatrix type="matrix" values="
+            0.367  0.861 -0.228  0  0
+            0.280  0.673  0.047  0  0
+           -0.012  0.043  0.969  0  0
+            0      0      0      1  0"/>
+        </filter>
+        <filter id="cvd-protanopia">
+          <feColorMatrix type="matrix" values="
+            0.152  1.053 -0.205  0  0
+            0.115  0.786  0.099  0  0
+           -0.004 -0.048  1.052  0  0
+            0      0      0      1  0"/>
+        </filter>
+        <filter id="cvd-tritanopia">
+          <feColorMatrix type="matrix" values="
+            1.256 -0.077 -0.180  0  0
+           -0.078  0.931  0.148  0  0
+            0.005  0.691  0.304  0  0
+            0      0      0      1  0"/>
+        </filter>
+      </defs>
+    </svg>
+
+    <!-- Color blindness toast -->
+    <div id="cvd-toast" style="
+      position:fixed; bottom:24px; right:24px; z-index:9000;
+      background:var(--color-bg-card); border:1px solid var(--color-border);
+      border-radius:10px; padding:10px 16px; font-family:var(--font-mono);
+      font-size:12px; color:var(--color-text-secondary);
+      opacity:0; pointer-events:none;
+      transition:opacity 0.25s ease;
+    " aria-live="polite"></div>
+
+    <!-- Konami / Snellen modal -->
+    <div id="snellen-modal" style="
+      display:none; position:fixed; inset:0; z-index:9999;
+      background:rgba(0,0,0,0.92); align-items:center; justify-content:center;
+    " role="dialog" aria-modal="true" aria-label="Snellen Eye Chart">
+      <div style="
+        background:#fafafa; color:#111; border-radius:16px;
+        padding:40px 48px; max-width:380px; width:90%;
+        text-align:center; position:relative;
+        box-shadow:0 32px 80px rgba(0,0,0,0.6);
+      ">
+        <p style="font-size:10px;font-family:monospace;letter-spacing:0.15em;color:#888;margin-bottom:20px;text-transform:uppercase;">Visual Acuity Test</p>
+        <div style="font-family:'Courier New',monospace;line-height:2.2;font-weight:700;">
+          <div style="font-size:42px;">E</div>
+          <div style="font-size:30px;">F P</div>
+          <div style="font-size:22px;">T O Z</div>
+          <div style="font-size:17px;">L P E D</div>
+          <div style="font-size:13px;">P E C F D</div>
+          <div style="font-size:11px;">E D F C Z P</div>
+          <div style="font-size:9px;">F E L O P Z D</div>
+          <div style="font-size:8px;color:#34d399;font-family:'Geist Mono',monospace;letter-spacing:-0.02em;margin-top:4px;">
+            If you can read this, your vision is perfect.<br/>Mine runs at 30fps.
+          </div>
+        </div>
+        <p style="font-family:monospace;font-size:9px;color:#aaa;margin-top:18px;letter-spacing:0.08em;">
+          Visual acuity: 20/20 &middot; OD Philip Abakah
+        </p>
+        <button onclick="document.getElementById('snellen-modal').style.display='none'" style="
+          margin-top:20px;font-size:11px;color:#888;background:none;border:none;cursor:pointer;font-family:monospace;
+        ">[ press Esc or click outside to dismiss ]</button>
+      </div>
+    </div>
+
     <slot />
     <script>import { inject } from '@vercel/analytics'; inject();</script>
+
+    <script is:inline>
+      // ── Easter Egg 1: Console message ──────────────────────────────
+      console.log(
+        '%c 👁  %c Philip Abakah %c\n\n' +
+        '%c You found the console. Impressive.\n' +
+        ' So did my YOLOv8 model — it just called you\n' +
+        ' a "person" with 94.2% confidence.\n\n' +
+        '%c  philipabakahmensah@gmail.com\n' +
+        '  github.com/Strange-Philip\n',
+        'font-size:32px;line-height:1.4',
+        'font-size:18px;font-weight:700;color:#34d399',
+        'font-size:14px',
+        'font-size:13px;color:#a1a1aa;line-height:1.8',
+        'font-size:12px;font-family:monospace;color:#71717a'
+      );
+
+      // ── Easter Egg 2: Color blindness simulator (Shift+V) ──────────
+      const cvdModes = [
+        { label: 'Normal vision', filter: '' },
+        { label: '👁 Deuteranopia (red-green) — Shift+V to cycle', filter: 'url(#cvd-deuteranopia)' },
+        { label: '👁 Protanopia (red) — Shift+V to cycle', filter: 'url(#cvd-protanopia)' },
+        { label: '👁 Tritanopia (blue-yellow) — Shift+V to cycle', filter: 'url(#cvd-tritanopia)' },
+      ];
+      let cvdIndex = parseInt(localStorage.getItem('cvd-index') || '0', 10);
+      const toast = document.getElementById('cvd-toast');
+      let toastTimer = 0;
+
+      // Restore filter on every page load
+      if (cvdIndex > 0) {
+        document.documentElement.style.filter = cvdModes[cvdIndex].filter;
+      }
+
+      function showToast(msg) {
+        if (!toast) return;
+        toast.textContent = msg;
+        toast.style.opacity = '1';
+        clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => { toast.style.opacity = '0'; }, 2800);
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.shiftKey && e.key === 'V') {
+          cvdIndex = (cvdIndex + 1) % cvdModes.length;
+          const mode = cvdModes[cvdIndex];
+          document.documentElement.style.filter = mode.filter;
+          localStorage.setItem('cvd-index', String(cvdIndex));
+          showToast(mode.label);
+        }
+      });
+
+      // ── Easter Egg 3: Konami code → Snellen chart ──────────────────
+      const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+      let kIdx = 0;
+      const modal = document.getElementById('snellen-modal');
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === KONAMI[kIdx]) {
+          kIdx++;
+          if (kIdx === KONAMI.length) {
+            kIdx = 0;
+            if (modal) {
+              modal.style.display = 'flex';
+              const btn = modal.querySelector('button');
+              if (btn) btn.focus();
+            }
+          }
+        } else {
+          kIdx = e.key === KONAMI[0] ? 1 : 0;
+        }
+      });
+
+      if (modal) {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) modal.style.display = 'none';
+        });
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal) modal.style.display = 'none';
+      });
+    </script>
   </body>
 </html>
