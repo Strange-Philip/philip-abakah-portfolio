@@ -125,15 +125,41 @@ const ogImage = new URL(image, Astro.site);
       </defs>
     </svg>
 
-    <!-- Color blindness toast -->
-    <div id="cvd-toast" style="
-      position:fixed; bottom:24px; right:24px; z-index:9000;
-      background:var(--color-bg-card); border:1px solid var(--color-border);
-      border-radius:10px; padding:10px 16px; font-family:var(--font-mono);
-      font-size:12px; color:var(--color-text-secondary);
-      opacity:0; pointer-events:none;
-      transition:opacity 0.25s ease;
-    " aria-live="polite"></div>
+    <!-- Toast -->
+    <style>
+      #cvd-toast {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 9000;
+        background: var(--color-bg-card);
+        border: 1px solid var(--color-border);
+        border-radius: 10px;
+        padding: 10px 16px;
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--color-text-secondary);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease, transform 0.25s ease;
+        transform: translateY(0);
+      }
+      @media (max-width: 768px) {
+        #cvd-toast {
+          right: auto;
+          left: 50%;
+          transform: translateX(-50%) translateY(16px);
+          width: calc(100vw - 48px);
+          max-width: 340px;
+          text-align: center;
+          border-radius: 12px;
+        }
+        #cvd-toast.toast-visible {
+          transform: translateX(-50%) translateY(0);
+        }
+      }
+    </style>
+    <div id="cvd-toast" aria-live="polite"></div>
 
     <!-- Latency HUD -->
     <div id="latency-hud" style="
@@ -244,11 +270,13 @@ const ogImage = new URL(image, Astro.site);
       );
 
       // ── Easter Egg 2: Color blindness simulator (Shift+V) ──────────
+      var isMobile = 'ontouchstart' in window;
+      var cvdHint = isMobile ? 'long press blank area to cycle' : 'Shift+V to cycle';
       const cvdModes = [
         { label: 'Normal vision', filter: '' },
-        { label: '👁 Deuteranopia (red-green) — Shift+V to cycle', filter: 'url(#cvd-deuteranopia)' },
-        { label: '👁 Protanopia (red) — Shift+V to cycle', filter: 'url(#cvd-protanopia)' },
-        { label: '👁 Tritanopia (blue-yellow) — Shift+V to cycle', filter: 'url(#cvd-tritanopia)' },
+        { label: '👁 Deuteranopia (red-green) — ' + cvdHint, filter: 'url(#cvd-deuteranopia)' },
+        { label: '👁 Protanopia (red) — ' + cvdHint, filter: 'url(#cvd-protanopia)' },
+        { label: '👁 Tritanopia (blue-yellow) — ' + cvdHint, filter: 'url(#cvd-tritanopia)' },
       ];
       let cvdIndex = parseInt(localStorage.getItem('cvd-index') || '0', 10);
       const toast = document.getElementById('cvd-toast');
@@ -263,8 +291,12 @@ const ogImage = new URL(image, Astro.site);
         if (!toast) return;
         toast.textContent = msg;
         toast.style.opacity = '1';
+        toast.classList.add('toast-visible');
         clearTimeout(toastTimer);
-        toastTimer = window.setTimeout(() => { toast.style.opacity = '0'; }, 2800);
+        toastTimer = window.setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.classList.remove('toast-visible');
+        }, 2800);
       }
 
       document.addEventListener('keydown', (e) => {
@@ -277,10 +309,15 @@ const ogImage = new URL(image, Astro.site);
         }
       });
 
-      // ── Mobile: long press (600ms) to cycle CVD filter + vibrate ──
+      // ── Mobile: long press on blank space (600ms) → CVD filter ───
       let longPressTimer = 0;
       document.addEventListener('touchstart', (e) => {
         if (e.touches.length !== 1) return;
+        var t = e.target;
+        var tag = t.tagName;
+        if (tag === 'A' || tag === 'BUTTON' || tag === 'IMG' || tag === 'INPUT' ||
+            tag === 'TEXTAREA' || tag === 'SELECT' || tag === 'VIDEO' ||
+            t.closest('a') || t.closest('button') || t.closest('img')) return;
         longPressTimer = window.setTimeout(() => {
           cvdIndex = (cvdIndex + 1) % cvdModes.length;
           const mode = cvdModes[cvdIndex];
@@ -357,7 +394,7 @@ const ogImage = new URL(image, Astro.site);
           if (tag === 'INPUT' || tag === 'TEXTAREA') return;
           fovActive = !fovActive;
           if (fovOverlay) fovOverlay.style.display = fovActive ? 'block' : 'none';
-          showToast(fovActive ? '👁 Foveated rendering — move cursor, press F to exit' : 'Foveated rendering off');
+          showToast(fovActive ? '👁 Foveated rendering · press F to exit' : 'Foveated rendering off');
         }
       });
 
@@ -378,7 +415,7 @@ const ogImage = new URL(image, Astro.site);
             showToast('Papers mode off');
           } else {
             document.documentElement.setAttribute('data-papers-mode', '');
-            showToast('📄 Papers mode — viewing as academic abstract · press P to exit');
+            showToast('📄 Papers mode · press P to exit');
           }
         }
       });
@@ -392,7 +429,7 @@ const ogImage = new URL(image, Astro.site);
             showToast('Human vision restored');
           } else {
             document.documentElement.setAttribute('data-model-view', '');
-            showToast('🤖 Model view — YOLOv8 perception active · Shift+M to exit');
+            showToast('🤖 Model view active · Shift+M to exit');
           }
         }
       });
@@ -432,73 +469,6 @@ const ogImage = new URL(image, Astro.site);
       // ── Mobile Touch Easter Eggs ──────────────────────────────────
       // ══════════════════════════════════════════════════════════════
 
-      // ── Shared single-touch tracking ──────────────────────────────
-      var mStartX = 0, mStartY = 0, mStartTime = 0;
-      var mTapCount = 0, mTapTimer = 0;
-      var mSwipeSeq = [];
-      var M_KONAMI = ['up','up','down','down','left','right','left','right'];
-
-      document.addEventListener('touchstart', function(e) {
-        if (e.touches.length !== 1) return;
-        mStartX = e.touches[0].clientX;
-        mStartY = e.touches[0].clientY;
-        mStartTime = Date.now();
-      }, { passive: true });
-
-      document.addEventListener('touchend', function(e) {
-        // Only process clean single-finger lifts
-        if (e.changedTouches.length !== 1 || e.touches.length !== 0) return;
-        var endX = e.changedTouches[0].clientX;
-        var endY = e.changedTouches[0].clientY;
-        var dx = endX - mStartX;
-        var dy = endY - mStartY;
-        var absDx = Math.abs(dx);
-        var absDy = Math.abs(dy);
-        var elapsed = Date.now() - mStartTime;
-        var isSwipe = Math.max(absDx, absDy) > 40;
-
-        if (isSwipe) {
-          var dir = absDx > absDy ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up');
-
-          // Papers Mode: swipe up from bottom 60% of screen
-          if (dir === 'up' && absDy > 80 && mStartY > window.innerHeight * 0.6) {
-            var isOn = document.documentElement.hasAttribute('data-papers-mode');
-            document.documentElement.toggleAttribute('data-papers-mode');
-            showToast(isOn ? 'Papers mode off' : '📄 Papers mode · swipe up again to exit');
-            if (navigator.vibrate) navigator.vibrate(isOn ? 50 : 80);
-            return;
-          }
-
-          // Swipe Konami → Snellen chart
-          mSwipeSeq.push(dir);
-          if (mSwipeSeq.length > M_KONAMI.length) mSwipeSeq.shift();
-          if (JSON.stringify(mSwipeSeq) === JSON.stringify(M_KONAMI)) {
-            mSwipeSeq = [];
-            if (modal) modal.style.display = 'flex';
-            if (navigator.vibrate) navigator.vibrate([60, 40, 120]);
-          }
-
-        } else if (elapsed < 300) {
-          // Triple tap → Latency HUD
-          mTapCount++;
-          clearTimeout(mTapTimer);
-          mTapTimer = window.setTimeout(function() { mTapCount = 0; }, 450);
-          if (mTapCount === 3) {
-            mTapCount = 0;
-            hudActive = !hudActive;
-            if (hud) hud.style.display = hudActive ? 'block' : 'none';
-            if (hudActive) {
-              lastFrame = performance.now(); frameCount = 0;
-              hudRaf = requestAnimationFrame(hudTick);
-              if (navigator.vibrate) navigator.vibrate(60);
-              showToast('◈ Latency HUD · triple tap to close');
-            } else {
-              cancelAnimationFrame(hudRaf);
-            }
-          }
-        }
-      }, { passive: true });
-
       // ── Shake → Blind Spot Demo ───────────────────────────────────
       if (window.DeviceMotionEvent) {
         var lastShakeTime = 0;
@@ -514,47 +484,6 @@ const ogImage = new URL(image, Astro.site);
           }
         }, { passive: true });
       }
-
-      // ── Two-finger hold → Foveated Rendering ─────────────────────
-      var twoFingerTimer = 0;
-      document.addEventListener('touchstart', function(e) {
-        if (e.touches.length === 2) {
-          var midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-          var midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-          twoFingerTimer = window.setTimeout(function() {
-            fovActive = true;
-            if (fovOverlay) {
-              fovOverlay.style.display = 'block';
-              fovOverlay.style.setProperty('--fx', midX + 'px');
-              fovOverlay.style.setProperty('--fy', midY + 'px');
-            }
-            if (navigator.vibrate) navigator.vibrate(50);
-            showToast('👁 Foveated rendering · lift fingers to exit');
-          }, 500);
-        } else {
-          clearTimeout(twoFingerTimer);
-        }
-      }, { passive: true });
-
-      document.addEventListener('touchmove', function(e) {
-        if (fovActive && fovOverlay && e.touches.length > 0) {
-          fovOverlay.style.setProperty('--fx', e.touches[0].clientX + 'px');
-          fovOverlay.style.setProperty('--fy', e.touches[0].clientY + 'px');
-        }
-      }, { passive: true });
-
-      document.addEventListener('touchend', function(e) {
-        if (e.touches.length < 2) clearTimeout(twoFingerTimer);
-        if (fovActive && e.touches.length === 0) {
-          fovActive = false;
-          if (fovOverlay) fovOverlay.style.display = 'none';
-        }
-      }, { passive: true });
-
-      document.addEventListener('touchcancel', function() {
-        clearTimeout(twoFingerTimer);
-        if (fovActive) { fovActive = false; if (fovOverlay) fovOverlay.style.display = 'none'; }
-      }, { passive: true });
 
       // ── Triple tap profile photo → Model View ─────────────────────
       var photoEl = document.querySelector('.hero-photo-tilt');
