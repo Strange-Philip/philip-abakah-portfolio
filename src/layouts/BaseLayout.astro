@@ -309,15 +309,14 @@ const ogImage = new URL(image, Astro.site);
         }
       });
 
-      // ── Mobile: long press on blank space (600ms) → CVD filter ───
+      // ── Mobile: long press on blank space (700ms) → CVD filter ───
+      var TEXT_TAGS = /^(A|BUTTON|IMG|INPUT|TEXTAREA|SELECT|VIDEO|AUDIO|LABEL|NAV|P|H1|H2|H3|H4|H5|H6|LI|SPAN|STRONG|EM|B|I|U|CODE|PRE|SMALL|FIGCAPTION|BLOCKQUOTE|SVG|PATH|CIRCLE|RECT|TIME)$/;
       let longPressTimer = 0;
       document.addEventListener('touchstart', (e) => {
         if (e.touches.length !== 1) return;
         var t = e.target;
-        var tag = t.tagName;
-        if (tag === 'A' || tag === 'BUTTON' || tag === 'IMG' || tag === 'INPUT' ||
-            tag === 'TEXTAREA' || tag === 'SELECT' || tag === 'VIDEO' ||
-            t.closest('a') || t.closest('button') || t.closest('img')) return;
+        if (TEXT_TAGS.test(t.tagName)) return;
+        if (t.closest('a') || t.closest('button') || t.closest('nav') || t.closest('img')) return;
         longPressTimer = window.setTimeout(() => {
           cvdIndex = (cvdIndex + 1) % cvdModes.length;
           const mode = cvdModes[cvdIndex];
@@ -325,11 +324,13 @@ const ogImage = new URL(image, Astro.site);
           localStorage.setItem('cvd-index', String(cvdIndex));
           showToast(mode.label);
           if (navigator.vibrate) navigator.vibrate(cvdIndex === 0 ? [80, 40, 80] : 120);
-        }, 600);
+        }, 700);
       }, { passive: true });
-      document.addEventListener('touchend',   () => clearTimeout(longPressTimer), { passive: true });
-      document.addEventListener('touchmove',  () => clearTimeout(longPressTimer), { passive: true });
-      document.addEventListener('touchcancel',() => clearTimeout(longPressTimer), { passive: true });
+      document.addEventListener('touchend',      () => clearTimeout(longPressTimer), { passive: true });
+      document.addEventListener('touchmove',     () => clearTimeout(longPressTimer), { passive: true });
+      document.addEventListener('touchcancel',   () => clearTimeout(longPressTimer), { passive: true });
+      document.addEventListener('selectionchange', () => clearTimeout(longPressTimer));
+      document.addEventListener('contextmenu',   () => clearTimeout(longPressTimer));
 
       // ── Easter Egg 3: Latency HUD (Shift+L) ───────────────────────
       const hud = document.getElementById('latency-hud');
