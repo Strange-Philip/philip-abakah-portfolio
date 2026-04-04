@@ -63,7 +63,7 @@ const timeline = [
 
 <BaseLayout title="About — Philip Abakah" description="Everything you need to know about me, in one place.">
   <Nav />
-  <main>
+  <main id="main-content">
     <div class="container">
       <PageHeader
         emoji="😎"
@@ -97,7 +97,7 @@ const timeline = [
         So I kept building, just in a different direction.
       </p>
 
-      <h3 class="bio-heading">The Work</h3>
+      <h2 class="bio-heading">The Work</h2>
       <p>
         My work sits at the intersection of <strong>AI, healthcare, and accessibility</strong> — not as ideas,
         but as systems that run in the real world.
@@ -115,7 +115,7 @@ const timeline = [
         how models can support real decision-making, not just predictions.
       </p>
 
-      <h3 class="bio-heading">The Turning Point</h3>
+      <h2 class="bio-heading">The Turning Point</h2>
       <p>
         Joining <a href="https://www.letsenvision.com/" target="_blank" rel="noopener noreferrer" class="body-link">Envision Technologies</a>
         late 2024 changed everything. Working on systems used by over <strong>100,000 blind and low vision users</strong>
@@ -303,6 +303,7 @@ const timeline = [
     margin-top: 32px;
     margin-bottom: 12px;
     letter-spacing: -0.01em;
+    /* display as h3 visually but h2 semantically */
   }
 
   .about-ctas {
