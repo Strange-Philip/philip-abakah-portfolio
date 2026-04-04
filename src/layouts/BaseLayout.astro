@@ -427,6 +427,158 @@ const ogImage = new URL(image, Astro.site);
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && modal) modal.style.display = 'none';
       });
+
+      // ══════════════════════════════════════════════════════════════
+      // ── Mobile Touch Easter Eggs ──────────────────────────────────
+      // ══════════════════════════════════════════════════════════════
+
+      // ── Shared single-touch tracking ──────────────────────────────
+      var mStartX = 0, mStartY = 0, mStartTime = 0;
+      var mTapCount = 0, mTapTimer = 0;
+      var mSwipeSeq = [];
+      var M_KONAMI = ['up','up','down','down','left','right','left','right'];
+
+      document.addEventListener('touchstart', function(e) {
+        if (e.touches.length !== 1) return;
+        mStartX = e.touches[0].clientX;
+        mStartY = e.touches[0].clientY;
+        mStartTime = Date.now();
+      }, { passive: true });
+
+      document.addEventListener('touchend', function(e) {
+        // Only process clean single-finger lifts
+        if (e.changedTouches.length !== 1 || e.touches.length !== 0) return;
+        var endX = e.changedTouches[0].clientX;
+        var endY = e.changedTouches[0].clientY;
+        var dx = endX - mStartX;
+        var dy = endY - mStartY;
+        var absDx = Math.abs(dx);
+        var absDy = Math.abs(dy);
+        var elapsed = Date.now() - mStartTime;
+        var isSwipe = Math.max(absDx, absDy) > 40;
+
+        if (isSwipe) {
+          var dir = absDx > absDy ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up');
+
+          // Papers Mode: swipe up from bottom 60% of screen
+          if (dir === 'up' && absDy > 80 && mStartY > window.innerHeight * 0.6) {
+            var isOn = document.documentElement.hasAttribute('data-papers-mode');
+            document.documentElement.toggleAttribute('data-papers-mode');
+            showToast(isOn ? 'Papers mode off' : '📄 Papers mode · swipe up again to exit');
+            if (navigator.vibrate) navigator.vibrate(isOn ? 50 : 80);
+            return;
+          }
+
+          // Swipe Konami → Snellen chart
+          mSwipeSeq.push(dir);
+          if (mSwipeSeq.length > M_KONAMI.length) mSwipeSeq.shift();
+          if (JSON.stringify(mSwipeSeq) === JSON.stringify(M_KONAMI)) {
+            mSwipeSeq = [];
+            if (modal) modal.style.display = 'flex';
+            if (navigator.vibrate) navigator.vibrate([60, 40, 120]);
+          }
+
+        } else if (elapsed < 300) {
+          // Triple tap → Latency HUD
+          mTapCount++;
+          clearTimeout(mTapTimer);
+          mTapTimer = window.setTimeout(function() { mTapCount = 0; }, 450);
+          if (mTapCount === 3) {
+            mTapCount = 0;
+            hudActive = !hudActive;
+            if (hud) hud.style.display = hudActive ? 'block' : 'none';
+            if (hudActive) {
+              lastFrame = performance.now(); frameCount = 0;
+              hudRaf = requestAnimationFrame(hudTick);
+              if (navigator.vibrate) navigator.vibrate(60);
+              showToast('◈ Latency HUD · triple tap to close');
+            } else {
+              cancelAnimationFrame(hudRaf);
+            }
+          }
+        }
+      }, { passive: true });
+
+      // ── Shake → Blind Spot Demo ───────────────────────────────────
+      if (window.DeviceMotionEvent) {
+        var lastShakeTime = 0;
+        window.addEventListener('devicemotion', function(e) {
+          var acc = e.accelerationIncludingGravity;
+          if (!acc) return;
+          var force = Math.abs(acc.x || 0) + Math.abs(acc.y || 0) + Math.abs(acc.z || 0);
+          var now = Date.now();
+          if (force > 35 && now - lastShakeTime > 1500) {
+            lastShakeTime = now;
+            if (bsModal) bsModal.style.display = 'flex';
+            if (navigator.vibrate) navigator.vibrate([80, 50, 80]);
+          }
+        }, { passive: true });
+      }
+
+      // ── Two-finger hold → Foveated Rendering ─────────────────────
+      var twoFingerTimer = 0;
+      document.addEventListener('touchstart', function(e) {
+        if (e.touches.length === 2) {
+          var midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+          var midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+          twoFingerTimer = window.setTimeout(function() {
+            fovActive = true;
+            if (fovOverlay) {
+              fovOverlay.style.display = 'block';
+              fovOverlay.style.setProperty('--fx', midX + 'px');
+              fovOverlay.style.setProperty('--fy', midY + 'px');
+            }
+            if (navigator.vibrate) navigator.vibrate(50);
+            showToast('👁 Foveated rendering · lift fingers to exit');
+          }, 500);
+        } else {
+          clearTimeout(twoFingerTimer);
+        }
+      }, { passive: true });
+
+      document.addEventListener('touchmove', function(e) {
+        if (fovActive && fovOverlay && e.touches.length > 0) {
+          fovOverlay.style.setProperty('--fx', e.touches[0].clientX + 'px');
+          fovOverlay.style.setProperty('--fy', e.touches[0].clientY + 'px');
+        }
+      }, { passive: true });
+
+      document.addEventListener('touchend', function(e) {
+        if (e.touches.length < 2) clearTimeout(twoFingerTimer);
+        if (fovActive && e.touches.length === 0) {
+          fovActive = false;
+          if (fovOverlay) fovOverlay.style.display = 'none';
+        }
+      }, { passive: true });
+
+      document.addEventListener('touchcancel', function() {
+        clearTimeout(twoFingerTimer);
+        if (fovActive) { fovActive = false; if (fovOverlay) fovOverlay.style.display = 'none'; }
+      }, { passive: true });
+
+      // ── Triple tap profile photo → Model View ─────────────────────
+      var photoEl = document.querySelector('.hero-photo-tilt');
+      var photoTapCount = 0, photoTapTimer = 0;
+      if (photoEl) {
+        photoEl.addEventListener('touchend', function(e) {
+          if (e.changedTouches.length !== 1) return;
+          photoTapCount++;
+          clearTimeout(photoTapTimer);
+          photoTapTimer = window.setTimeout(function() { photoTapCount = 0; }, 450);
+          if (photoTapCount === 3) {
+            photoTapCount = 0;
+            var active = document.documentElement.hasAttribute('data-model-view');
+            if (active) {
+              document.documentElement.removeAttribute('data-model-view');
+              showToast('Human vision restored');
+            } else {
+              document.documentElement.setAttribute('data-model-view', '');
+              showToast('🤖 Model view active · triple tap photo to exit');
+            }
+            if (navigator.vibrate) navigator.vibrate(active ? 40 : [50, 30, 100]);
+          }
+        }, { passive: true });
+      }
     </script>
   </body>
 </html>
