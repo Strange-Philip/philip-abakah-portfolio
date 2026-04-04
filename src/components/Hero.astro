@@ -4,15 +4,11 @@
 <section class="hero" aria-label="Introduction">
   <div class="container hero-inner">
     <!-- Portrait photo — 3:4 -->
-    <div class="hero-photo-wrap animate-fade-in animate-delay-1">
-      <img
-        src="/images/profile.jpg"
-        alt="Philip Abakah"
-        width="450"
-        height="600"
-        loading="eager"
-        class="hero-photo"
-      />
+    <div class="hero-photo-tilt animate-fade-in animate-delay-1">
+      <div class="hero-photo-wrap">
+        <img src="/images/profile.jpg" alt="Philip Abakah" width="450" height="600" loading="eager" class="hero-photo hero-photo--real" />
+        <img src="/images/cartoon_profile.png" alt="Philip Abakah — cartoon" width="450" height="600" loading="eager" class="hero-photo hero-photo--cartoon" />
+      </div>
     </div>
 
     <!-- Summary -->
@@ -51,12 +47,23 @@
   }
 
   /* Photo — 3:4 portrait */
-  .hero-photo-wrap {
+  .hero-photo-tilt {
     flex-shrink: 0;
     width: 340px;
+    transform: rotate(-3deg);
+    transition: transform 0.7s cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+
+  .hero-photo-tilt:hover {
+    transform: rotate(0deg);
+  }
+
+  .hero-photo-wrap {
+    width: 100%;
     border-radius: var(--radius-xl);
     overflow: hidden;
     border: 1px solid var(--color-border-soft);
+    position: relative;
   }
 
   .hero-photo {
@@ -65,6 +72,21 @@
     aspect-ratio: 3 / 4;
     object-fit: cover;
     object-position: top center;
+  }
+
+  .hero-photo--cartoon {
+    position: absolute;
+    inset: 0;
+    transform: translateX(100%);
+    transition: transform 0.7s cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+
+  .hero-photo-wrap.from-left .hero-photo--cartoon {
+    transform: translateX(-100%);
+  }
+
+  .hero-photo-tilt:hover .hero-photo--cartoon {
+    transform: translateX(0);
   }
 
   /* Text */
@@ -113,6 +135,19 @@
     border-radius: var(--radius-md);
   }
 
+  /* Real photo — slide out opposite direction on hover */
+  .hero-photo--real {
+    transition: transform 0.7s cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+
+  .hero-photo-tilt:hover .hero-photo-wrap.from-left .hero-photo--real {
+    transform: translateX(100%);
+  }
+
+  .hero-photo-tilt:hover .hero-photo-wrap.from-right .hero-photo--real {
+    transform: translateX(-100%);
+  }
+
   /* Mobile: stack */
   @media (max-width: 768px) {
     .hero-inner {
@@ -135,3 +170,16 @@
     }
   }
 </style>
+
+<script>
+  const tilt = document.querySelector('.hero-photo-tilt') as HTMLElement;
+  const wrap = document.querySelector('.hero-photo-wrap') as HTMLElement;
+  if (tilt && wrap) {
+    tilt.addEventListener('mouseenter', (e) => {
+      const { left, width } = tilt.getBoundingClientRect();
+      const side = (e.clientX - left) < width / 2 ? 'from-left' : 'from-right';
+      wrap.classList.remove('from-left', 'from-right');
+      wrap.classList.add(side);
+    });
+  }
+</script>
