@@ -10,6 +10,12 @@ tags: ["Flutter", "Dart", "Firebase", "EdTech", "Mobile"]
 links:
   github: "https://github.com/Strange-Philip/iRis"
 year: "2022"
+paper:
+  abstract: "IRIS is a mobile EdTech platform for optometry students, providing structured flashcard, note-taking, and quiz modules calibrated to the clinical content of optometric training curricula."
+  problem: "Optometry students face a high volume of specialized clinical content with no dedicated study tool. General apps (Anki, Quizlet) lack optometry-specific structure and exam alignment."
+  method: "Flutter + Firebase for cross-platform mobile delivery. Content organized by optometry curriculum modules. Spaced repetition logic for flashcard scheduling. Offline-first architecture via Firebase local cache."
+  results: "Used by optometry students at the University of Cape Coast. Content spans refraction, ocular disease, binocular vision, and clinical procedures."
+  limitations: "Content is manually curated — no automated generation from syllabi or textbooks. No clinical case simulation or OSCE-style practice mode. Limited to English-language content."
 ---
 
 ## Overview

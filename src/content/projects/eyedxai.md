@@ -20,6 +20,12 @@ recognition:
   - "Presented at Google AI & Health Workshop, Accra"
   - "Featured at Google DevFest keynote"
 year: "2024"
+paper:
+  abstract: "EyeDxAI is a multimodal AI diagnostic assistant using Google Gemini to analyze ocular images and clinical descriptions, providing structured differential diagnoses for eye conditions."
+  problem: "Access to specialist eye diagnosis is limited in low-resource settings. GPs and non-specialist clinicians lack tools to triage ocular emergencies or distinguish common from sight-threatening conditions."
+  method: "Google Gemini multimodal API for image + text co-analysis. Flutter mobile interface for cross-platform clinical use. Prompt engineering aligned with clinical diagnostic reasoning frameworks used in optometric practice."
+  results: "Shortlisted in the Google Gemini Developer Competition 2024. Demonstrated at Google AI & Health Workshop, Accra. Featured at Google DevFest keynote as a healthcare AI case study."
+  limitations: "Not yet validated against ground-truth clinical diagnoses in a prospective study. Model hallucination risk in edge cases requires clinician oversight. Requires internet connectivity — offline inference not yet implemented."
 ---
 
 ## Overview

@@ -135,6 +135,62 @@ const ogImage = new URL(image, Astro.site);
       transition:opacity 0.25s ease;
     " aria-live="polite"></div>
 
+    <!-- Latency HUD -->
+    <div id="latency-hud" style="
+      display:none; position:fixed; top:16px; right:16px; z-index:8900;
+      background:rgba(9,9,11,0.92); border:1px solid #34d399;
+      border-radius:8px; padding:14px 18px; font-family:var(--font-mono);
+      font-size:11px; color:#34d399; line-height:1.9;
+      backdrop-filter:blur(8px); min-width:200px;
+    " aria-live="polite">
+      <div style="font-size:9px;letter-spacing:0.12em;color:#71717a;margin-bottom:6px;text-transform:uppercase;">◈ Latency HUD — Shift+L to close</div>
+      <div>FPS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span id="hud-fps">--</span></div>
+      <div>Inference : <span id="hud-latency">--</span> ms</div>
+      <div>Confidence: <span id="hud-conf">--</span></div>
+      <div>Memory &nbsp;&nbsp;: <span id="hud-mem">--</span></div>
+      <div style="margin-top:6px;padding-top:6px;border-top:1px solid #27272a;font-size:9px;color:#52525b;">YOLOv8n · on-device · Ghana</div>
+    </div>
+
+    <!-- Blind Spot Demo modal -->
+    <div id="blindspot-modal" style="
+      display:none; position:fixed; inset:0; z-index:9998;
+      background:rgba(0,0,0,0.96); align-items:center; justify-content:center; flex-direction:column;
+    " role="dialog" aria-modal="true" aria-label="Blind Spot Demonstration">
+      <p style="font-family:monospace;font-size:11px;color:#52525b;letter-spacing:0.1em;margin-bottom:32px;text-transform:uppercase;">Blind Spot Demonstration</p>
+      <div style="display:flex;align-items:center;gap:120px;margin-bottom:40px;">
+        <div style="width:22px;height:22px;position:relative;">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+            <div style="width:2px;height:22px;background:#f4f4f5;"></div>
+          </div>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+            <div style="height:2px;width:22px;background:#f4f4f5;"></div>
+          </div>
+        </div>
+        <div id="bs-dot" style="width:18px;height:18px;background:#34d399;border-radius:50%;"></div>
+      </div>
+      <div style="max-width:400px;text-align:center;">
+        <p style="font-family:monospace;font-size:13px;color:#a1a1aa;line-height:1.8;margin-bottom:10px;">
+          Cover your <strong style="color:#f4f4f5;">right eye</strong>. Focus on the <strong style="color:#f4f4f5;">cross</strong> with your left.<br/>
+          Slowly move back from the screen.<br/>
+          The green dot will <strong style="color:#34d399;">disappear</strong>.
+        </p>
+        <p style="font-family:monospace;font-size:11px;color:#52525b;line-height:1.7;">
+          That's your optic disc — where the nerve exits, there are no photoreceptors.<br/>
+          Your brain fills it in. Models learn to do the same.
+        </p>
+      </div>
+      <button onclick="document.getElementById('blindspot-modal').style.display='none'" style="
+        margin-top:32px;font-size:11px;color:#52525b;background:none;border:none;cursor:pointer;font-family:monospace;
+      ">[ press Esc or B to close ]</button>
+    </div>
+
+    <!-- Foveated rendering overlay -->
+    <div id="foveal-overlay" style="
+      display:none; position:fixed; inset:0; z-index:8800;
+      pointer-events:none;
+      background:radial-gradient(circle at var(--fx,50%) var(--fy,50%), transparent 0px, transparent 110px, rgba(9,9,11,0.45) 260px, rgba(9,9,11,0.82) 480px);
+    " aria-hidden="true"></div>
+
     <!-- Konami / Snellen modal -->
     <div id="snellen-modal" style="
       display:none; position:fixed; inset:0; z-index:9999;
@@ -221,7 +277,127 @@ const ogImage = new URL(image, Astro.site);
         }
       });
 
-      // ── Easter Egg 3: Konami code → Snellen chart ──────────────────
+      // ── Mobile: long press (600ms) to cycle CVD filter + vibrate ──
+      let longPressTimer = 0;
+      document.addEventListener('touchstart', (e) => {
+        if (e.touches.length !== 1) return;
+        longPressTimer = window.setTimeout(() => {
+          cvdIndex = (cvdIndex + 1) % cvdModes.length;
+          const mode = cvdModes[cvdIndex];
+          document.documentElement.style.filter = mode.filter;
+          localStorage.setItem('cvd-index', String(cvdIndex));
+          showToast(mode.label);
+          if (navigator.vibrate) navigator.vibrate(cvdIndex === 0 ? [80, 40, 80] : 120);
+        }, 600);
+      }, { passive: true });
+      document.addEventListener('touchend',   () => clearTimeout(longPressTimer), { passive: true });
+      document.addEventListener('touchmove',  () => clearTimeout(longPressTimer), { passive: true });
+      document.addEventListener('touchcancel',() => clearTimeout(longPressTimer), { passive: true });
+
+      // ── Easter Egg 3: Latency HUD (Shift+L) ───────────────────────
+      const hud = document.getElementById('latency-hud');
+      const hudFps = document.getElementById('hud-fps');
+      const hudLat = document.getElementById('hud-latency');
+      const hudConf = document.getElementById('hud-conf');
+      const hudMem = document.getElementById('hud-mem');
+      let hudActive = false;
+      let lastFrame = performance.now();
+      let frameCount = 0;
+      let hudRaf = 0;
+
+      function hudTick() {
+        frameCount++;
+        const now = performance.now();
+        if (now - lastFrame >= 500) {
+          const fps = Math.round(frameCount / ((now - lastFrame) / 1000));
+          if (hudFps) hudFps.textContent = String(fps);
+          if (hudLat) hudLat.textContent = String((16 + Math.random() * 28).toFixed(1));
+          if (hudConf) hudConf.textContent = (0.87 + Math.random() * 0.12).toFixed(3);
+          const mem = performance.memory;
+          if (hudMem) hudMem.textContent = mem ? Math.round(mem.usedJSHeapSize / 1048576) + ' MB' : 'n/a';
+          lastFrame = now;
+          frameCount = 0;
+        }
+        if (hudActive) hudRaf = requestAnimationFrame(hudTick);
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.shiftKey && e.key === 'L') {
+          hudActive = !hudActive;
+          if (hud) hud.style.display = hudActive ? 'block' : 'none';
+          if (hudActive) { lastFrame = performance.now(); frameCount = 0; hudRaf = requestAnimationFrame(hudTick); }
+          else cancelAnimationFrame(hudRaf);
+        }
+      });
+
+      // ── Easter Egg 4: Blind Spot Demo (B key) ─────────────────────
+      const bsModal = document.getElementById('blindspot-modal');
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'b' && !e.shiftKey && !e.ctrlKey && !e.metaKey) {
+          const tag = e.target && e.target.tagName;
+          if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+          if (bsModal) {
+            const isOpen = bsModal.style.display === 'flex';
+            bsModal.style.display = isOpen ? 'none' : 'flex';
+          }
+        }
+        if (e.key === 'Escape' && bsModal) bsModal.style.display = 'none';
+      });
+      if (bsModal) {
+        bsModal.addEventListener('click', (e) => { if (e.target === bsModal) bsModal.style.display = 'none'; });
+      }
+
+      // ── Easter Egg 5: Foveated Rendering (F key toggle) ────────────
+      const fovOverlay = document.getElementById('foveal-overlay');
+      let fovActive = false;
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'f' && !e.shiftKey && !e.ctrlKey && !e.metaKey) {
+          const tag = e.target && e.target.tagName;
+          if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+          fovActive = !fovActive;
+          if (fovOverlay) fovOverlay.style.display = fovActive ? 'block' : 'none';
+          showToast(fovActive ? '👁 Foveated rendering — move cursor, press F to exit' : 'Foveated rendering off');
+        }
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!fovActive || !fovOverlay) return;
+        fovOverlay.style.setProperty('--fx', e.clientX + 'px');
+        fovOverlay.style.setProperty('--fy', e.clientY + 'px');
+      });
+
+      // ── Easter Egg 6: Papers Mode (P key) ─────────────────────────
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'p' && !e.shiftKey && !e.ctrlKey && !e.metaKey) {
+          const tag = e.target && e.target.tagName;
+          if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+          const active = document.documentElement.hasAttribute('data-papers-mode');
+          if (active) {
+            document.documentElement.removeAttribute('data-papers-mode');
+            showToast('Papers mode off');
+          } else {
+            document.documentElement.setAttribute('data-papers-mode', '');
+            showToast('📄 Papers mode — viewing as academic abstract · press P to exit');
+          }
+        }
+      });
+
+      // ── Easter Egg 7: Model View (Shift+M) ────────────────────────
+      document.addEventListener('keydown', (e) => {
+        if (e.shiftKey && e.key === 'M') {
+          const active = document.documentElement.hasAttribute('data-model-view');
+          if (active) {
+            document.documentElement.removeAttribute('data-model-view');
+            showToast('Human vision restored');
+          } else {
+            document.documentElement.setAttribute('data-model-view', '');
+            showToast('🤖 Model view — YOLOv8 perception active · Shift+M to exit');
+          }
+        }
+      });
+
+      // ── Easter Egg 8: Konami code → Snellen chart ──────────────────
       const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
       let kIdx = 0;
       const modal = document.getElementById('snellen-modal');

@@ -8,6 +8,16 @@
       <div class="hero-photo-wrap">
         <img src="/images/profile.jpg" alt="Philip Abakah" width="450" height="600" loading="eager" class="hero-photo hero-photo--real" />
         <img src="/images/cartoon_profile.png" alt="Philip Abakah — cartoon" width="450" height="600" loading="eager" class="hero-photo hero-photo--cartoon" />
+
+        <!-- YOLO bounding boxes (Model View easter egg) -->
+        <div class="yolo-box" style="display:none; position:absolute; inset:0; pointer-events:none;">
+          <div class="yolo-bbox" style="top:4%;left:8%;width:84%;height:78%;">
+            <span class="yolo-label">person · 0.94</span>
+          </div>
+          <div class="yolo-bbox yolo-bbox--face" style="top:6%;left:22%;width:52%;height:36%;">
+            <span class="yolo-label">face · 0.89</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -87,6 +97,37 @@
 
   .hero-photo-tilt:hover .hero-photo--cartoon {
     transform: translateX(0);
+  }
+
+  /* ── YOLO bounding boxes (model view) ── */
+  .yolo-bbox {
+    position: absolute;
+    border: 1.5px solid #34d399;
+    border-radius: 2px;
+    box-shadow: 0 0 6px rgba(52,211,153,0.4);
+  }
+
+  .yolo-bbox--face {
+    border-color: #fbbf24;
+    box-shadow: 0 0 6px rgba(251,191,36,0.4);
+  }
+
+  .yolo-label {
+    position: absolute;
+    top: -20px;
+    left: 0;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 600;
+    color: #09090b;
+    background: #34d399;
+    padding: 1px 5px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .yolo-bbox--face .yolo-label {
+    background: #fbbf24;
   }
 
   /* Text */

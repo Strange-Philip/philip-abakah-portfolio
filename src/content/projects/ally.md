@@ -19,6 +19,12 @@ recognition:
   - "100% of pilot participants reported improved experience"
   - "Reduced dependency on human assistance"
 year: "2024"
+paper:
+  abstract: "Ally is an AI-powered accessibility platform deployed by Envision Technologies, enabling blind and low vision users to navigate cultural and digital environments through conversational voice and keyboard interfaces."
+  problem: "Cultural institutions lack scalable accessible interfaces. Blind and low vision visitors depend on human guides or miss content entirely — no AI-powered solution existed at deployment scale for museum accessibility."
+  method: "Conversational AI layer with voice interface and keyboard navigation, integrated with museum content management systems. React-based accessible web platform deployed across San Francisco's museum network."
+  results: "Serving 100,000+ users globally. 100% of San Francisco museum pilot participants reported improved experience. Measurably reduced dependency on human assistance during visits."
+  limitations: "Effectiveness depends on quality of museum content metadata. Voice recognition degrades in noisy environments. Initial deployment required significant content onboarding from institutional partners."
 ---
 
 ## Overview

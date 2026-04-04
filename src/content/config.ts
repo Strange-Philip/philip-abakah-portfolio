@@ -24,6 +24,13 @@ const projects = defineCollection({
       .optional(),
     recognition: z.array(z.string()).optional(),
     year: z.string(),
+    paper: z.object({
+      abstract: z.string(),
+      problem: z.string(),
+      method: z.string(),
+      results: z.string(),
+      limitations: z.string(),
+    }).optional(),
   }),
 });
 

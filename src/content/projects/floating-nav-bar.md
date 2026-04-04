@@ -16,6 +16,12 @@ links:
   github: "https://github.com/Strange-Philip/simple_floating_bottom_nav_bar"
   live: "https://pub.dev/packages/simple_floating_bottom_nav_bar"
 year: "2023"
+paper:
+  abstract: "A fully customizable floating bottom navigation bar Flutter package providing smooth multi-tab navigation with zero-configuration defaults and broad platform support."
+  problem: "Flutter's native bottom navigation bar is rigid in styling and animation. Developers needed a drop-in package with rounded corners, floating elevation, and smooth tab transitions without building custom widgets."
+  method: "Pure Flutter/Dart widget with customizable color, shape, size, and animation parameters. Published as open-source on pub.dev with full documentation, usage examples, and MIT license."
+  results: "150 pub points. 12+ community likes. Cross-platform support across Android, iOS, Web, and Desktop. Actively used in Flutter projects in the community."
+  limitations: "Single bar layout only — no drawer or rail variants. Animation options limited to fade and slide transitions. No gesture-based tab switching support currently implemented."
 ---
 
 ## Overview

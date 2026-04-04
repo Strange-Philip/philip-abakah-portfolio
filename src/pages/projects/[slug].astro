@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 }
 
 const { project } = Astro.props;
-const { title, tagline, image, imageAlt, tags, metrics, links, recognition, year, status } =
+const { title, tagline, image, imageAlt, tags, metrics, links, recognition, year, status, paper } =
   project.data;
 
 const { Content } = await render(project);
@@ -101,6 +101,42 @@ const s = statusConfig[status] ?? { label: status, cls: '' };
             </ul>
           </div>
         )}
+      </div>
+    )}
+
+    <!-- Papers Mode panel (hidden by default, shown on P key) -->
+    {paper && (
+      <div class="container paper-panel" aria-hidden="true">
+        <div class="paper-header">
+          <span class="paper-label">[ papers mode — press P to exit ]</span>
+          <span class="paper-venue">Philip Abakah · {year}</span>
+        </div>
+        <h2 class="paper-title">{title}</h2>
+        <p class="paper-authors">Philip Abakah — Optometrist & AI Engineer, University of Cape Coast / Envision Technologies</p>
+
+        <div class="paper-section">
+          <h3 class="paper-section-label">Abstract</h3>
+          <p class="paper-text">{paper.abstract}</p>
+        </div>
+        <div class="paper-rule"></div>
+        <div class="paper-columns">
+          <div class="paper-section">
+            <h3 class="paper-section-label">1. Problem Statement</h3>
+            <p class="paper-text">{paper.problem}</p>
+          </div>
+          <div class="paper-section">
+            <h3 class="paper-section-label">2. Method</h3>
+            <p class="paper-text">{paper.method}</p>
+          </div>
+          <div class="paper-section">
+            <h3 class="paper-section-label">3. Results</h3>
+            <p class="paper-text">{paper.results}</p>
+          </div>
+          <div class="paper-section">
+            <h3 class="paper-section-label">4. Limitations & Future Work</h3>
+            <p class="paper-text">{paper.limitations}</p>
+          </div>
+        </div>
       </div>
     )}
 
@@ -292,6 +328,92 @@ const s = statusConfig[status] ?? { label: status, cls: '' };
     position: absolute;
     left: 0;
     color: var(--color-text-mute);
+  }
+
+  /* ── Papers Mode ── */
+  .paper-panel {
+    display: none;
+    max-width: 720px;
+    margin-bottom: 52px;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: 36px 40px;
+    font-family: var(--font-mono);
+  }
+
+  :global(html[data-papers-mode]) .paper-panel { display: block; }
+  :global(html[data-papers-mode]) .project-body { display: none; }
+
+  .paper-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--color-border-soft);
+  }
+
+  .paper-label {
+    font-size: 10px;
+    color: var(--color-accent);
+    letter-spacing: 0.08em;
+  }
+
+  .paper-venue {
+    font-size: 10px;
+    color: var(--color-text-mute);
+    letter-spacing: 0.06em;
+  }
+
+  .paper-title {
+    font-family: var(--font-display);
+    font-size: clamp(18px, 3vw, 26px);
+    font-weight: 700;
+    color: var(--color-text);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .paper-authors {
+    font-size: 11px;
+    color: var(--color-text-mute);
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  .paper-rule {
+    border: none;
+    border-top: 1px solid var(--color-border-soft);
+    margin-block: 20px;
+  }
+
+  .paper-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 32px;
+  }
+
+  @media (max-width: 600px) {
+    .paper-columns { grid-template-columns: 1fr; }
+    .paper-panel { padding: 24px 20px; }
+  }
+
+  .paper-section-label {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-accent);
+    margin-bottom: 8px;
+  }
+
+  .paper-text {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    line-height: 1.75;
+    font-family: var(--font-mono);
   }
 
   /* Prose */

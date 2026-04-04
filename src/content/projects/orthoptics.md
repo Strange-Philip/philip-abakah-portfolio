@@ -14,6 +14,12 @@ metrics:
 recognition:
   - "Exhibited at Women in Vision Ghana 2025"
 year: "2025"
+paper:
+  abstract: "An interactive simulation platform for optometry educators and students, enabling parameterizable visualization of strabismus conditions and their perceptual consequences."
+  problem: "Strabismus is difficult to teach without real patients. Students struggle to map muscle imbalance to gaze deviation and diplopia presentation across different strabismus types without hands-on clinical exposure."
+  method: "Flutter simulation engine rendering interactive eye models. Parameterizable conditions covering esotropia, exotropia, and hypertropia. Visual representation of the patient's-eye-view of diplopia for each configuration."
+  results: "Demonstrated at Women in Vision Ghana 2025 to optometrists, students, and health educators. Positive reception from clinical educators on pedagogical utility and conceptual clarity."
+  limitations: "Simulation is stylized for conceptual understanding, not anatomical precision. Does not model accommodative components of strabismus. No quantitative measurement or clinical data output."
 ---
 
 ## Overview

@@ -14,6 +14,12 @@ metrics:
 recognition:
   - "Built for Anidaso Eye Centre (2022–2023)"
 year: "2023"
+paper:
+  abstract: "Hunu is a telemedicine platform enabling non-clinician community health workers to conduct structured vision screening in rural Ghanaian communities and refer cases to specialist eye care."
+  problem: "Rural communities in Ghana lack access to optometrists. Vision loss from treatable conditions — cataracts, glaucoma, refractive error — goes undetected until advanced stages, resulting in preventable blindness."
+  method: "Flutter mobile app with guided screening protocols designed for non-clinicians. Firebase backend for case record storage and remote review. Structured data collection for visual acuity, symptoms, and ocular history."
+  results: "Deployed in outreach screening programs through Anidaso Eye Centre. Enabled non-clinicians to conduct structured screenings and flag referral cases for specialist review."
+  limitations: "Screener training required for protocol adherence. No automated image capture or AI-assisted triage. Archived after pilot phase — not in active deployment."
 ---
 
 ## Overview

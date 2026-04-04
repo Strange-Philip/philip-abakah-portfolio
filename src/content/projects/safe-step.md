@@ -18,6 +18,12 @@ recognition:
   - "Core research project — University of Cape Coast"
   - "Presented at academic review sessions"
 year: "2024"
+paper:
+  abstract: "Safe Step is a real-time assistive navigation system combining YOLOv8 object detection with MediaPipe depth estimation to provide spatial audio feedback for visually impaired users."
+  problem: "Visually impaired individuals lack reliable, affordable real-time navigation assistance. Existing solutions are expensive, slow, or require environmental modification."
+  method: "YOLOv8 for obstacle detection, MediaPipe for depth estimation, FastAPI inference backend, Flutter for on-device mobile delivery. Obstacles are mapped to spatial audio cues indicating direction and proximity."
+  results: "Sub-100ms on-device inference latency. Accurate detection of common indoor obstacles. Validated at University of Cape Coast academic research review sessions."
+  limitations: "Model robustness degrades in novel environments and extreme lighting. Depth estimation accuracy decreases beyond 5m. Not yet validated in a prospective clinical trial."
 ---
 
 ## Overview
