@@ -39,14 +39,14 @@ const s = statusConfig[status] ?? { label: status, cls: '' };
     {image && (
       <div class="project-hero-image">
         <div class="container">
-          <img
-            src={image}
-            alt={imageAlt || title}
-            width="1100"
-            height="620"
-            loading="eager"
-            class="hero-img"
-          />
+          <div class="hero-img-box">
+            <img
+              src={image}
+              alt={imageAlt || title}
+              loading="eager"
+              class="hero-img"
+            />
+          </div>
         </div>
       </div>
     )}
@@ -86,7 +86,7 @@ const s = statusConfig[status] ?? { label: status, cls: '' };
             <p class="meta-label">🔗 Links</p>
             <div class="links-list">
               {links.github && <a href={links.github} target="_blank" rel="noopener noreferrer" class="project-link">GitHub →</a>}
-              {links.live   && <a href={links.live}   target="_blank" rel="noopener noreferrer" class="project-link">Live Site →</a>}
+              {links.live   && <a href={links.live}   target="_blank" rel="noopener noreferrer" class="project-link">{links.live.includes('youtu') ? 'Watch Demo →' : 'Live Site →'}</a>}
               {links.demo   && <a href={links.demo}   target="_blank" rel="noopener noreferrer" class="project-link">View Demo →</a>}
               {links.paper  && <a href={links.paper}  target="_blank" rel="noopener noreferrer" class="project-link">Read Paper →</a>}
             </div>
@@ -136,12 +136,24 @@ const s = statusConfig[status] ?? { label: status, cls: '' };
   /* Hero image */
   .project-hero-image { margin-bottom: 44px; }
 
-  .hero-img {
-    width: 100%;
-    max-height: 480px;
-    object-fit: cover;
-    border-radius: var(--radius-xl);
+  .hero-img-box {
+    background: var(--color-bg-secondary);
     border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-xl);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-img {
+    max-width: 100%;
+    max-height: 520px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: var(--radius-lg);
+    display: block;
   }
 
   /* Header */

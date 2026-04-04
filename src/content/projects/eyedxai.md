@@ -4,6 +4,8 @@ tagline: "AI-powered eye diagnosis assistant using Gemini for ocular analysis"
 status: "live"
 featured: true
 order: 3
+image: "/images/eyedxai/main.png"
+imageAlt: "EyeDxAI — AI-powered eye diagnosis assistant"
 tags: ["Flutter", "Gemini API", "Google AI", "Healthcare AI", "Mobile", "Dart"]
 metrics:
   - { label: "Competition", value: "Google Gemini 2024" }
@@ -12,6 +14,7 @@ metrics:
   - { label: "Modality", value: "Image + Text Analysis" }
 links:
   demo: "https://ai.google.dev/competition/projects/eyedxai-eye-diagnosis-with-ai"
+  live: "https://youtu.be/TRyZxk5Bp28"
 recognition:
   - "Shortlisted — Google Gemini Developer Competition 2024"
   - "Presented at Google AI & Health Workshop, Accra"
