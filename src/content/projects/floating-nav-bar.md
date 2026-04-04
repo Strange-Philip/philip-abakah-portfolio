@@ -4,7 +4,7 @@ tagline: "Fully customizable floating bottom navigation bar package for Flutter"
 status: "live"
 featured: false
 order: 7
-image: "https://raw.githubusercontent.com/Strange-Philip/simple_floating_bottom_nav_bar/main/images/floating.gif"
+image: "/images/floating-nav-bar/main.gif"
 imageAlt: "Simple Floating Bottom Nav Bar demo"
 tags: ["Flutter", "Dart", "Open Source", "UI Component", "Pub.Dev"]
 metrics:
