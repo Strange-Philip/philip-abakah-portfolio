@@ -8,7 +8,7 @@ interface Props {
 }
 
 const {
-  title = 'Philip Abakah — Vision Scientist Engineer',
+  title = 'Philip Abakah — Optometrist & AI Engineer | Vision Science',
   description =
     'Building assistive intelligence for human vision. Vision Scientist, Optometrist, and AI Developer working at the intersection of machine learning and eye care.',
   image = '/images/profile.jpg',
@@ -37,6 +37,34 @@ const ogImage = new URL(image, Astro.site);
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+
+    <!-- Author & crawl signals -->
+    <meta name="author" content="Philip Abakah" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:site_name" content="Philip Abakah" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- JSON-LD Person Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Philip Abakah",
+      "alternateName": ["Philip Abakah Mensah", "OD Philip Abakah"],
+      "url": "https://philipabakah.com",
+      "image": "https://philipabakah.com/images/profile.jpg",
+      "jobTitle": ["Optometrist", "AI Engineer", "Vision Scientist"],
+      "description": "Vision Scientist Engineer and Optometrist building AI systems at the intersection of machine learning and eye care. Creator of Safe Step and EyeDxAI.",
+      "email": "philipabakahmensah@gmail.com",
+      "sameAs": [
+        "https://github.com/Strange-Philip",
+        "https://www.linkedin.com/in/philip-abakah-od-22a45a206/"
+      ],
+      "knowsAbout": ["Computer Vision", "Machine Learning", "Optometry", "YOLOv8", "Flutter", "AI Healthcare"],
+      "nationality": "Ghanaian",
+      "address": { "@type": "PostalAddress", "addressLocality": "Accra", "addressCountry": "GH" }
+    }
+    </script>
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
