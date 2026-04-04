@@ -310,13 +310,13 @@ const ogImage = new URL(image, Astro.site);
       });
 
       // ── Mobile: long press on blank space (700ms) → CVD filter ───
-      var TEXT_TAGS = /^(A|BUTTON|IMG|INPUT|TEXTAREA|SELECT|VIDEO|AUDIO|LABEL|NAV|P|H1|H2|H3|H4|H5|H6|LI|SPAN|STRONG|EM|B|I|U|CODE|PRE|SMALL|FIGCAPTION|BLOCKQUOTE|SVG|PATH|CIRCLE|RECT|TIME)$/;
+      var SAFE_TAGS = /^(DIV|SECTION|MAIN|ARTICLE|BODY|HEADER|FOOTER|ASIDE|FIGURE|UL|OL)$/;
       let longPressTimer = 0;
       document.addEventListener('touchstart', (e) => {
         if (e.touches.length !== 1) return;
         var t = e.target;
-        if (TEXT_TAGS.test(t.tagName)) return;
-        if (t.closest('a') || t.closest('button') || t.closest('nav') || t.closest('img')) return;
+        if (!SAFE_TAGS.test(t.tagName)) return;
+        if (t.closest('a') || t.closest('button') || t.closest('nav')) return;
         longPressTimer = window.setTimeout(() => {
           cvdIndex = (cvdIndex + 1) % cvdModes.length;
           const mode = cvdModes[cvdIndex];
