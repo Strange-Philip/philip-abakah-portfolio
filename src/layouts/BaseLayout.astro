@@ -250,7 +250,9 @@ const ogImage = new URL(image, Astro.site);
       </div>
     </div>
 
-    <slot />
+    <div id="cvd-wrap">
+      <slot />
+    </div>
     <script>import { inject } from '@vercel/analytics'; inject();</script>
 
     <script is:inline>
@@ -280,11 +282,12 @@ const ogImage = new URL(image, Astro.site);
       ];
       let cvdIndex = parseInt(localStorage.getItem('cvd-index') || '0', 10);
       const toast = document.getElementById('cvd-toast');
+      var cvdEl = document.getElementById('cvd-wrap') || document.body;
       let toastTimer = 0;
 
       // Restore filter on every page load
       if (cvdIndex > 0) {
-        document.documentElement.style.filter = cvdModes[cvdIndex].filter;
+        cvdEl.style.filter = cvdModes[cvdIndex].filter;
       }
 
       function showToast(msg) {
@@ -303,7 +306,7 @@ const ogImage = new URL(image, Astro.site);
         if (e.shiftKey && e.key === 'V') {
           cvdIndex = (cvdIndex + 1) % cvdModes.length;
           const mode = cvdModes[cvdIndex];
-          document.documentElement.style.filter = mode.filter;
+          cvdEl.style.filter = mode.filter;
           localStorage.setItem('cvd-index', String(cvdIndex));
           showToast(mode.label);
         }
@@ -320,7 +323,7 @@ const ogImage = new URL(image, Astro.site);
         longPressTimer = window.setTimeout(() => {
           cvdIndex = (cvdIndex + 1) % cvdModes.length;
           const mode = cvdModes[cvdIndex];
-          document.documentElement.style.filter = mode.filter;
+          cvdEl.style.filter = mode.filter;
           localStorage.setItem('cvd-index', String(cvdIndex));
           showToast(mode.label);
           if (navigator.vibrate) navigator.vibrate(cvdIndex === 0 ? [80, 40, 80] : 120);
