@@ -3,7 +3,7 @@ title: "F1 Pit Stop Prediction"
 tagline: "Predicting pit stop decisions from noisy race-state signals using ML"
 status: "in-progress"
 featured: false
-order: 8
+order: 1.5
 year: "2026"
 image: "/images/f1-pitstop-prediction/competition.png"
 imageAlt: "Kaggle Playground Series S6E5 — Predicting F1 Pit Stops competition overview"
