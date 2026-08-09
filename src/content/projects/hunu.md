@@ -1,7 +1,7 @@
 ---
 title: "Hunu"
 tagline: "Telemedicine app for rural vision screening and eye care access"
-status: "archived"
+status: "in-progress"
 featured: false
 order: 6
 image: "/images/hunu/main.jpeg"
