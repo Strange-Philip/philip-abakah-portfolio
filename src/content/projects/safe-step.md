@@ -1,7 +1,7 @@
 ---
 title: "Safe Step"
 tagline: "Real-time assistive navigation for visually impaired users"
-status: "in-progress"
+status: "research"
 featured: true
 order: 1
 image: "/images/safestep/main.png"
@@ -17,7 +17,7 @@ links:
 recognition:
   - "Core research project — University of Cape Coast"
   - "Presented at academic review sessions"
-year: "2024"
+year: "2025"
 paper:
   abstract: "Safe Step is a real-time assistive navigation system combining YOLOv8 object detection with MediaPipe depth estimation to provide spatial audio feedback for visually impaired users."
   problem: "Visually impaired individuals lack reliable, affordable real-time navigation assistance. Existing solutions are expensive, slow, or require environmental modification."
