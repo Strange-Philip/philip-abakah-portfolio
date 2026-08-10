@@ -4,6 +4,7 @@ import Nav from '../components/Nav.astro';
 import PageHeader from '../components/PageHeader.astro';
 import SectionDivider from '../components/SectionDivider.astro';
 import Footer from '../components/Footer.astro';
+import { publications } from '../data/publications';
 
 const stack = [
   { emoji: '🐦', name: 'Flutter' },
@@ -179,40 +180,20 @@ const timeline = [
     <!-- Research -->
     <section class="container about-section">
       <SectionDivider label="Research" />
-      <div class="pub-card">
-        <span class="pub-icon">📄</span>
-        <div>
-          <a
-            href="https://journals.sagepub.com/doi/10.1177/20552076261461391"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="pub-title"
-          >
-            Disease-specific data augmentation enhances deep learning classification of age-related macular degeneration, diabetic retinopathy, and glaucoma
-          </a>
-          <div class="pub-meta">
-            <span class="pub-venue">Digital Health · SAGE Journals</span>
-            <span class="pub-year-badge">2026</span>
+      {publications.map((pub) => (
+        <div class="pub-card">
+          <span class="pub-icon">📄</span>
+          <div>
+            <a href={pub.href} target="_blank" rel="noopener noreferrer" class="pub-title">
+              {pub.title}
+            </a>
+            <div class="pub-meta">
+              <span class="pub-venue">{pub.venue}</span>
+              <span class="pub-year-badge">{pub.year}</span>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="pub-card">
-        <span class="pub-icon">📄</span>
-        <div>
-          <a
-            href="https://gricghana.org/automating-glaucoma-diagnosis-using-artificial-intelligence/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="pub-title"
-          >
-            Automating glaucoma diagnosis using artificial intelligence
-          </a>
-          <div class="pub-meta">
-            <span class="pub-venue">Ghana Research & Industry Collaborative</span>
-            <span class="pub-year-badge">2024</span>
-          </div>
-        </div>
-      </div>
+      ))}
     </section>
 
     <!-- Awards -->

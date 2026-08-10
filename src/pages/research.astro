@@ -1,0 +1,239 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import PageHeader from '../components/PageHeader.astro';
+import SectionDivider from '../components/SectionDivider.astro';
+import Work from '../components/Work.astro';
+import Footer from '../components/Footer.astro';
+import { publications } from '../data/publications';
+
+const allProjects = await getCollection('projects');
+const researchProjects = allProjects
+  .filter((p) => p.data.status === 'research')
+  .sort((a, b) => a.data.order - b.data.order);
+
+const researchInterests = [
+  'Computational vision science and ophthalmic imaging',
+  'OCT-based analysis of retinal and posterior ocular structure',
+  '3D modelling and quantitative characterisation of the eye',
+  'Machine learning and computer vision for ophthalmic applications',
+  'AI-assisted vision assessment and clinical decision support',
+  'Computer vision for assistive technologies and visual accessibility',
+  'Human-centred and real-world evaluation of intelligent vision systems',
+];
+
+const researchSkills = [
+  { emoji: '🧠', name: 'PyTorch' },
+  { emoji: '🩻', name: 'Medical Image Segmentation' },
+  { emoji: '🔷', name: 'U-Net / CNN Architectures' },
+  { emoji: '📊', name: 'Dice / IoU Evaluation' },
+  { emoji: '🗂️', name: 'Dataset Curation & Splitting' },
+  { emoji: '🎥', name: 'Real-Time Computer Vision' },
+  { emoji: '📱', name: 'On-Device Inference' },
+  { emoji: '🧬', name: 'Deep Learning Classification' },
+  { emoji: '🔁', name: 'Data Augmentation' },
+  { emoji: '🧪', name: 'Mixed-Method Research' },
+  { emoji: '🙋🏾', name: 'Usability & Task-Completion Testing' },
+  { emoji: '👁️', name: 'Vision Science Domain Knowledge' },
+];
+---
+
+<BaseLayout
+  title="Research — Philip Abakah"
+  description="Research projects, publications, and skills at the intersection of optometry and machine learning."
+>
+  <Nav />
+  <main id="main-content">
+    <div class="container">
+      <PageHeader
+        emoji="🔬"
+        title="Research"
+      />
+    </div>
+
+    <!-- Intro -->
+    <section class="container research-intro">
+      <p>
+        My research sits at the intersection of vision science and machine learning: using clinical
+        training in optometry to ask better questions about ophthalmic imaging, and computational
+        methods to try to answer them. Below is where that shows up in practice: applied research
+        projects, published work, and the skills I've built along the way.
+      </p>
+    </section>
+
+    <!-- Research Interests -->
+    <section class="container about-section">
+      <SectionDivider label="Research Interests" />
+      <ul class="list-rows">
+        {researchInterests.map((interest) => (
+          <li>
+            <span class="row-primary">{interest}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- Projects -->
+    <section class="about-section">
+      <div class="container">
+        <SectionDivider label="Projects" />
+      </div>
+      <Work projects={researchProjects} showAll />
+    </section>
+
+    <!-- Publications -->
+    <section class="container about-section">
+      <SectionDivider label="Publications" />
+      {publications.map((pub) => (
+        <div class="pub-card">
+          <span class="pub-icon">📄</span>
+          <div>
+            <a href={pub.href} target="_blank" rel="noopener noreferrer" class="pub-title">
+              {pub.title}
+            </a>
+            <div class="pub-meta">
+              <span class="pub-venue">{pub.venue}</span>
+              <span class="pub-year-badge">{pub.year}</span>
+            </div>
+          </div>
+        </div>
+      ))}
+    </section>
+
+    <!-- Research Skills -->
+    <section class="container about-section about-section--last">
+      <SectionDivider label="Research Skills" />
+      <div class="stack-grid">
+        {researchSkills.map((skill) => (
+          <span class="stack-chip">
+            <span class="chip-emoji">{skill.emoji}</span>
+            {skill.name}
+          </span>
+        ))}
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .research-intro {
+    max-width: 640px;
+    padding-bottom: 48px;
+  }
+
+  .research-intro p {
+    font-size: 15px;
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+  }
+
+  .about-section {
+    padding-bottom: 48px;
+  }
+
+  .about-section--last {
+    padding-bottom: 80px;
+  }
+
+  /* Research Interests */
+  .list-rows {
+    list-style: none;
+  }
+
+  .list-rows li {
+    padding-block: 10px;
+    border-bottom: 1px solid var(--color-border-soft);
+  }
+
+  .list-rows li:last-child {
+    border-bottom: none;
+  }
+
+  .row-primary {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  /* Publications */
+  .pub-card {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 16px;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-lg);
+    margin-bottom: 32px;
+  }
+
+  .pub-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .pub-title {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text);
+    text-decoration: none;
+    line-height: 1.45;
+    margin-bottom: 8px;
+    transition: color 0.15s ease;
+  }
+
+  .pub-title:hover {
+    color: var(--color-accent);
+  }
+
+  .pub-meta {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .pub-venue {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+  }
+
+  .pub-year-badge {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-text-mute);
+    background: var(--color-bg-card);
+    padding: 2px 7px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border-soft);
+  }
+
+  /* Research Skills chips */
+  .stack-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .stack-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border-soft);
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+  }
+
+  .chip-emoji {
+    font-size: 14px;
+    line-height: 1;
+  }
+</style>
