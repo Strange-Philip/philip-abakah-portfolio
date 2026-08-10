@@ -5,6 +5,7 @@ import Nav from '../components/Nav.astro';
 import PageHeader from '../components/PageHeader.astro';
 import SectionDivider from '../components/SectionDivider.astro';
 import Work from '../components/Work.astro';
+import SkillArea from '../components/SkillArea.astro';
 import Footer from '../components/Footer.astro';
 import { publications } from '../data/publications';
 
@@ -13,14 +14,49 @@ const researchProjects = allProjects
   .filter((p) => p.data.status === 'research')
   .sort((a, b) => a.data.order - b.data.order);
 
-const researchInterests = [
-  'Computational vision science and ophthalmic imaging',
-  'OCT-based analysis of retinal and posterior ocular structure',
-  '3D modelling and quantitative characterisation of the eye',
-  'Machine learning and computer vision for ophthalmic applications',
-  'AI-assisted vision assessment and clinical decision support',
-  'Computer vision for assistive technologies and visual accessibility',
-  'Human-centred and real-world evaluation of intelligent vision systems',
+const researchThemes = [
+  {
+    number: '01',
+    title: 'Computational Ophthalmic Imaging',
+    bullets: [
+      'OCT analysis',
+      'Retinal / posterior eye structure',
+      'Segmentation and quantitative characterization',
+      '3D ocular modelling',
+    ],
+  },
+  {
+    number: '02',
+    title: 'AI for Vision Science',
+    bullets: [
+      'Computer vision',
+      'Deep learning',
+      'AI-assisted vision assessment',
+      'Clinical decision support',
+    ],
+  },
+  {
+    number: '03',
+    title: 'Human-Centred Vision Technology',
+    bullets: [
+      'Assistive vision systems',
+      'Accessibility',
+      'Real-world evaluation',
+      'On-device inference',
+    ],
+  },
+];
+
+const researchTrajectory =
+  "My research interests have evolved from clinical optometry toward computational approaches to understanding and improving human vision. My earlier work explored AI-assisted mobility and vision assessment in real-world settings. I am now extending this foundation into ophthalmic imaging, focusing on OCT-based retinal analysis, image segmentation, and quantitative modelling of ocular structure.";
+
+const awards = [
+  {
+    title: 'Caraham Ophthalmics Prize for Innovation in Optometry',
+    description:
+      'For the student who has demonstrated creativity and innovation in clinical practice, technology or research, with emphasis on improving the lives of people with vision loss.',
+    year: '2025',
+  },
 ];
 
 const researchSkills = [
@@ -52,26 +88,20 @@ const researchSkills = [
       />
     </div>
 
-    <!-- Intro -->
-    <section class="container research-intro">
-      <p>
-        My research sits at the intersection of vision science and machine learning: using clinical
-        training in optometry to ask better questions about ophthalmic imaging, and computational
-        methods to try to answer them. Below is where that shows up in practice: applied research
-        projects, published work, and the skills I've built along the way.
-      </p>
-    </section>
-
     <!-- Research Interests -->
     <section class="container about-section">
       <SectionDivider label="Research Interests" />
-      <ul class="list-rows">
-        {researchInterests.map((interest) => (
-          <li>
-            <span class="row-primary">{interest}</span>
-          </li>
+      <div class="themes-grid">
+        {researchThemes.map((theme) => (
+          <SkillArea number={theme.number} title={theme.title} bullets={theme.bullets} />
         ))}
-      </ul>
+      </div>
+    </section>
+
+    <!-- Research Trajectory -->
+    <section class="container research-intro">
+      <SectionDivider label="Research Trajectory" />
+      <p>{researchTrajectory}</p>
     </section>
 
     <!-- Projects -->
@@ -101,6 +131,23 @@ const researchSkills = [
       ))}
     </section>
 
+    <!-- Awards -->
+    <section class="container about-section">
+      <SectionDivider label="Awards" />
+      {awards.map((award) => (
+        <div class="pub-card">
+          <span class="pub-icon">🏆</span>
+          <div>
+            <p class="award-title">{award.title}</p>
+            <p class="award-desc">{award.description}</p>
+            <div class="pub-meta">
+              <span class="pub-year-badge">{award.year}</span>
+            </div>
+          </div>
+        </div>
+      ))}
+    </section>
+
     <!-- Research Skills -->
     <section class="container about-section about-section--last">
       <SectionDivider label="Research Skills" />
@@ -119,11 +166,11 @@ const researchSkills = [
 
 <style>
   .research-intro {
-    max-width: 640px;
     padding-bottom: 48px;
   }
 
   .research-intro p {
+    max-width: 640px;
     font-size: 15px;
     color: var(--color-text-secondary);
     line-height: 1.8;
@@ -138,23 +185,18 @@ const researchSkills = [
   }
 
   /* Research Interests */
-  .list-rows {
-    list-style: none;
+  .themes-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 
-  .list-rows li {
-    padding-block: 10px;
-    border-bottom: 1px solid var(--color-border-soft);
+  @media (min-width: 640px) {
+    .themes-grid { grid-template-columns: repeat(2, 1fr); }
   }
 
-  .list-rows li:last-child {
-    border-bottom: none;
-  }
-
-  .row-primary {
-    font-size: 14px;
-    color: var(--color-text-secondary);
-    line-height: 1.6;
+  @media (min-width: 1024px) {
+    .themes-grid { grid-template-columns: repeat(3, 1fr); }
   }
 
   /* Publications */
@@ -210,6 +252,22 @@ const researchSkills = [
     padding: 2px 7px;
     border-radius: var(--radius-full);
     border: 1px solid var(--color-border-soft);
+  }
+
+  /* Awards */
+  .award-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text);
+    line-height: 1.45;
+    margin-bottom: 6px;
+  }
+
+  .award-desc {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    line-height: 1.6;
+    margin-bottom: 8px;
   }
 
   /* Research Skills chips */
