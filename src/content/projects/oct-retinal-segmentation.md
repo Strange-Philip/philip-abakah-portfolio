@@ -5,8 +5,8 @@ status: "research"
 featured: true
 order: 0
 year: "2026"
-image: "/images/oct-retinal-segmentation/best_case.png"
-imageAlt: "U-Net retinal-layer segmentation prediction on an OCT B-scan, showing original scan, ground truth, prediction and overlay"
+image: "/images/oct-retinal-segmentation/annotations.png"
+imageAlt: "Manual retinal-layer annotations on an OCT B-scan, showing eight labeled boundary layers"
 tags: ["Python", "PyTorch", "Computer Vision", "Medical Imaging", "Deep Learning", "Image Segmentation", "U-Net", "Ophthalmology"]
 metrics:
   - { label: "Mean Dice", value: "0.8328" }
