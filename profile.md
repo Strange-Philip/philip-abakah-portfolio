@@ -6,7 +6,6 @@ location: Accra, Ghana
 
 contact:
 email: [philipabakahmensah@gmail.com](mailto:philipabakahmensah@gmail.com)
-phone: "+233 557 666 868"
 linkedin: https://www.linkedin.com/in/philip-abakah
 
 status:
