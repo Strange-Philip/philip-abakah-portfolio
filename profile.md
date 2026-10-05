@@ -35,6 +35,14 @@ He builds systems that improve how visually impaired individuals navigate and un
 
 # Experience
 
+## Clinical Intern Optometrist (Post-OD) — Permeff Eye Care, Accra
+
+Jan 2026 — Sep 2026
+
+* Post-qualification clinical internship following the Doctor of Optometry degree
+
+---
+
 ## Software Engineer — Envision Technologies B.V.
 
 Remote · Oct 2024 — Present
