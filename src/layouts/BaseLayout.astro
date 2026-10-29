@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Analytics from '../components/Analytics.astro';
 
 interface Props {
   title?: string;
@@ -259,6 +260,7 @@ const personLd = {
       <slot />
     </div>
     <script>import { inject } from '@vercel/analytics'; inject();</script>
+    <Analytics />
 
     <script is:inline>
       // ── Easter Egg 1: Console message ──────────────────────────────
