@@ -234,7 +234,6 @@ Data analysis
 
 github:
 
-* https://github.com/Strange-Philip/Opto_dip
 * https://github.com/Strange-Philip/iRis
 
 projects:
@@ -244,8 +243,7 @@ projects:
 
 company:
 
-* https://www.ally.me/
-* https://www.ally.me/museums
+* https://www.letsenvision.com
 
 ---
 

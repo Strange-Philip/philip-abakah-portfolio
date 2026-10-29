@@ -5,6 +5,8 @@
   <div class="footer-inner">
     <p class="footer-credit">
       Crafted with <span class="footer-heart">❤️</span> by Philip Abakah
+      <span class="footer-sep" aria-hidden="true">·</span>
+      <a href="/ai" class="footer-ai-link">For AI agents</a>
     </p>
 
     <div class="footer-socials">
@@ -53,6 +55,21 @@
 
   .footer-heart {
     font-size: 12px;
+  }
+
+  .footer-sep {
+    margin-inline: 6px;
+  }
+
+  .footer-ai-link {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-style: dashed;
+    text-underline-offset: 3px;
+  }
+
+  .footer-ai-link:hover {
+    color: var(--color-text-secondary);
   }
 
   .footer-socials {

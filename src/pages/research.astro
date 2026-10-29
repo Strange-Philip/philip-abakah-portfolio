@@ -8,47 +8,12 @@ import Work from '../components/Work.astro';
 import SkillArea from '../components/SkillArea.astro';
 import Footer from '../components/Footer.astro';
 import { publications } from '../data/publications';
+import { researchThemes, researchTrajectory } from '../data/profile';
 
 const allProjects = await getCollection('projects');
 const researchProjects = allProjects
   .filter((p) => p.data.status === 'research')
   .sort((a, b) => a.data.order - b.data.order);
-
-const researchThemes = [
-  {
-    number: '01',
-    title: 'Computational Ophthalmic Imaging',
-    bullets: [
-      'OCT analysis',
-      'Retinal / posterior eye structure',
-      'Segmentation and quantitative characterization',
-      '3D ocular modelling',
-    ],
-  },
-  {
-    number: '02',
-    title: 'AI for Vision Science',
-    bullets: [
-      'Computer vision',
-      'Deep learning',
-      'AI-assisted vision assessment',
-      'Clinical decision support',
-    ],
-  },
-  {
-    number: '03',
-    title: 'Human-Centred Vision Technology',
-    bullets: [
-      'Assistive vision systems',
-      'Accessibility',
-      'Real-world evaluation',
-      'On-device inference',
-    ],
-  },
-];
-
-const researchTrajectory =
-  "My research interests have evolved from clinical optometry toward computational approaches to understanding and improving human vision. My earlier work explored AI-assisted mobility and vision assessment in real-world settings. I am now extending this foundation into ophthalmic imaging, focusing on OCT-based retinal analysis, image segmentation, and quantitative modelling of ocular structure.";
 
 const awards = [
   {

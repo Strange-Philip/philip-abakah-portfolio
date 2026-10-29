@@ -13,7 +13,7 @@ metrics:
   - { label: "Deployment", value: "Museums (SF)" }
   - { label: "Interaction Mode", value: "Voice + Keyboard" }
 links:
-  live: "https://www.ally.me/museums"
+  live: "https://www.letsenvision.com"
 recognition:
   - "Deployed in San Francisco museum pilots"
   - "100% of pilot participants reported improved experience"

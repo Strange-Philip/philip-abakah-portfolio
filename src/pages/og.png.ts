@@ -112,7 +112,7 @@ export const GET: APIRoute = async () => {
                       color: '#3f3f46',
                       letterSpacing: '0.04em',
                     },
-                    children: 'philipabakah.com',
+                    children: new URL(import.meta.env.SITE).host,
                   },
                 },
               ],

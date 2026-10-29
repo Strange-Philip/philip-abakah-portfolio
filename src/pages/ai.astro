@@ -1,0 +1,320 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { publications } from '../data/publications';
+import {
+  SITE_URL,
+  identity,
+  researchThemes,
+  researchTrajectory,
+  experience,
+  education,
+  awards,
+  certifications,
+  leadership,
+  contact,
+  faq,
+  agentTerms,
+} from '../data/profile';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+
+const statusLabel: Record<string, string> = {
+  live: 'Live',
+  'in-progress': 'In progress',
+  research: 'Research',
+  archived: 'Archived',
+};
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    url: `${SITE_URL}/ai`,
+    name: 'Philip Abakah, in plain text',
+    mainEntity: {
+      '@type': 'Person',
+      name: identity.name,
+      url: SITE_URL,
+      jobTitle: identity.role,
+      description: identity.summary,
+      address: { '@type': 'PostalAddress', addressLocality: 'Accra', addressCountry: 'GH' },
+      alumniOf: { '@type': 'CollegeOrUniversity', name: 'University of Cape Coast' },
+      sameAs: contact.filter((c) => c.href.startsWith('https://') && c.href !== SITE_URL).map((c) => c.href),
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+
+<BaseLayout
+  title="For AI agents — Philip Abakah"
+  description="Everything about Philip Abakah in plain text, for language models, crawlers and anyone who would rather read than scroll."
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <Nav />
+  <main id="main-content">
+    <article class="container ai-page">
+      <header class="ai-header">
+        <p class="ai-eyebrow">Machine readable</p>
+        <h1 class="ai-title">Everything, in plain text.</h1>
+        <p class="ai-intro">
+          The rest of this site is designed to be looked at. This page is the same facts with the
+          design taken off, for models, crawlers, and anyone who would rather read than scroll.
+          Nothing here differs from the other pages. Also available as
+          <a href="/llms.txt" class="body-link body-link--internal">/llms.txt</a>.
+        </p>
+      </header>
+
+      <section aria-labelledby="who">
+        <h2 id="who">Who</h2>
+        <dl class="ai-fields">
+          <div><dt>Name</dt><dd>{identity.name}</dd></div>
+          <div><dt>Role</dt><dd>{identity.role}</dd></div>
+          <div><dt>Summary</dt><dd>{identity.summary}</dd></div>
+          <div><dt>Now</dt><dd>{identity.current}</dd></div>
+          <div><dt>Topics</dt><dd>{researchThemes.map((t) => t.title).join(', ')}</dd></div>
+          <div><dt>Based</dt><dd>{identity.based}</dd></div>
+          <div><dt>Building since</dt><dd>{identity.buildingSince}</dd></div>
+          <div><dt>Education</dt><dd>{education.map((e) => `${e.degree}, ${e.school} (${e.period})`).join('; ')}</dd></div>
+          <div><dt>Interests</dt><dd>{identity.interests.join(', ')}</dd></div>
+        </dl>
+      </section>
+
+      <section aria-labelledby="work">
+        <h2 id="work">Work</h2>
+        <ul class="ai-list">
+          {projects.map((p) => (
+            <li>
+              <h3><a href={`/projects/${p.slug}`} class="body-link body-link--internal">{p.data.title}</a></h3>
+              <p class="ai-meta">{p.data.year} · {statusLabel[p.data.status] ?? p.data.status} · /projects/{p.slug}</p>
+              <p>{p.data.tagline}.</p>
+              {p.data.metrics && p.data.metrics.length > 0 && (
+                <p class="ai-meta">{p.data.metrics.map((m) => `${m.label}: ${m.value}`).join(' · ')}</p>
+              )}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section aria-labelledby="experience">
+        <h2 id="experience">Experience</h2>
+        <ul class="ai-list">
+          {experience.map((e) => (
+            <li>
+              <h3>{e.role}, {e.org}</h3>
+              <p class="ai-meta">{e.period}</p>
+              {e.note && <p>{e.note}</p>}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section aria-labelledby="research">
+        <h2 id="research">Research</h2>
+        <p>{researchTrajectory}</p>
+        <ul class="ai-list">
+          {researchThemes.map((t) => (
+            <li>
+              <h3>{t.title}</h3>
+              <p>{t.bullets.join(', ')}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section aria-labelledby="publications">
+        <h2 id="publications">Publications</h2>
+        <ul class="ai-list">
+          {publications.map((pub) => (
+            <li>
+              <h3><a href={pub.href} target="_blank" rel="noopener noreferrer" class="body-link">{pub.title}</a></h3>
+              <p class="ai-meta">{pub.venue} · {pub.year}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section aria-labelledby="awards">
+        <h2 id="awards">Awards, certifications and leadership</h2>
+        <ul class="ai-rows">
+          {awards.map((a) => <li><span>{a.title}</span><span class="ai-meta">{a.year}</span></li>)}
+          {certifications.map((c) => <li><span>{c.title}</span><span class="ai-meta">{c.year}</span></li>)}
+          {leadership.map((l) => <li><span>{l.title}</span><span class="ai-meta">{l.org}</span></li>)}
+        </ul>
+      </section>
+
+      <section aria-labelledby="questions">
+        <h2 id="questions">Questions</h2>
+        {faq.map((f) => (
+          <div class="ai-qa">
+            <h3>{f.q}</h3>
+            <p>{f.a}</p>
+          </div>
+        ))}
+      </section>
+
+      <section aria-labelledby="contact">
+        <h2 id="contact">Contact</h2>
+        <dl class="ai-fields">
+          {contact.map((c) => (
+            <div>
+              <dt>{c.label}</dt>
+              <dd><a href={c.href} class="body-link" {...(c.href.startsWith('http') && { target: '_blank', rel: 'noopener noreferrer' })}>{c.value}</a></dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      <section aria-labelledby="agents">
+        <h2 id="agents">For agents</h2>
+        <dl class="ai-fields">
+          <div><dt>Plain text</dt><dd><a href="/llms.txt" class="body-link body-link--internal">{SITE_URL}/llms.txt</a></dd></div>
+          <div><dt>Sitemap</dt><dd><a href="/sitemap-index.xml" class="body-link body-link--internal">{SITE_URL}/sitemap-index.xml</a></dd></div>
+          <div><dt>Pages</dt><dd>/, /about, /works, /research, /now, /impossible-list, /projects/&lt;slug&gt;</dd></div>
+          <div><dt>Structured data</dt><dd>JSON-LD Person on every page; ProfilePage and FAQPage on this page.</dd></div>
+          <div><dt>Terms</dt><dd>{agentTerms.usage} {agentTerms.shortVersion}</dd></div>
+        </dl>
+      </section>
+    </article>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .ai-page {
+    max-width: 720px;
+    padding-top: 120px;
+    padding-bottom: 96px;
+    color: var(--color-text-secondary);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .ai-header {
+    margin-bottom: 56px;
+  }
+
+  .ai-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 12px;
+  }
+
+  .ai-title {
+    font-size: clamp(28px, 5vw, 40px);
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--color-text);
+    margin-bottom: 16px;
+  }
+
+  section {
+    padding-top: 32px;
+    margin-top: 32px;
+    border-top: 1px solid var(--color-border-soft);
+  }
+
+  h2 {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    margin-bottom: 20px;
+  }
+
+  h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  section > p {
+    margin-bottom: 20px;
+  }
+
+  .ai-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ai-fields > div {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  @media (min-width: 640px) {
+    .ai-fields > div {
+      grid-template-columns: 140px 1fr;
+      gap: 16px;
+    }
+  }
+
+  .ai-fields dt {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-text-tertiary);
+  }
+
+  .ai-fields dd {
+    color: var(--color-text);
+    overflow-wrap: anywhere;
+  }
+
+  .ai-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .ai-meta {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    overflow-wrap: anywhere;
+  }
+
+  .ai-rows {
+    list-style: none;
+  }
+
+  .ai-rows li {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--color-border-soft);
+    color: var(--color-text);
+  }
+
+  .ai-rows li .ai-meta {
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .ai-qa + .ai-qa {
+    margin-top: 20px;
+  }
+
+  .ai-qa h3 {
+    margin-bottom: 4px;
+  }
+</style>

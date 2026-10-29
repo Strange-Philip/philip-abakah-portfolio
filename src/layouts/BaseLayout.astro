@@ -16,6 +16,26 @@ const {
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(image, Astro.site);
+
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Philip Abakah',
+  alternateName: ['Philip Abakah Mensah', 'OD Philip Abakah'],
+  url: Astro.site?.href,
+  image: new URL('/images/profile.jpg', Astro.site).href,
+  jobTitle: ['Optometrist', 'AI Engineer', 'Vision Scientist'],
+  description:
+    'Vision Scientist Engineer and Optometrist building AI systems at the intersection of machine learning and eye care. Creator of Safe Step and EyeDxAI.',
+  email: 'philipabakahmensah@gmail.com',
+  sameAs: [
+    'https://github.com/Strange-Philip',
+    'https://www.linkedin.com/in/philip-abakah-od-22a45a206/',
+  ],
+  knowsAbout: ['Computer Vision', 'Machine Learning', 'Optometry', 'YOLOv8', 'Flutter', 'AI Healthcare'],
+  nationality: 'Ghanaian',
+  address: { '@type': 'PostalAddress', addressLocality: 'Accra', addressCountry: 'GH' },
+};
 ---
 
 <html lang="en">
@@ -45,26 +65,7 @@ const ogImage = new URL(image, Astro.site);
     <meta property="og:locale" content="en_US" />
 
     <!-- JSON-LD Person Schema -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Philip Abakah",
-      "alternateName": ["Philip Abakah Mensah", "OD Philip Abakah"],
-      "url": "https://philipabakah.com",
-      "image": "https://philipabakah.com/images/profile.jpg",
-      "jobTitle": ["Optometrist", "AI Engineer", "Vision Scientist"],
-      "description": "Vision Scientist Engineer and Optometrist building AI systems at the intersection of machine learning and eye care. Creator of Safe Step and EyeDxAI.",
-      "email": "philipabakahmensah@gmail.com",
-      "sameAs": [
-        "https://github.com/Strange-Philip",
-        "https://www.linkedin.com/in/philip-abakah-od-22a45a206/"
-      ],
-      "knowsAbout": ["Computer Vision", "Machine Learning", "Optometry", "YOLOv8", "Flutter", "AI Healthcare"],
-      "nationality": "Ghanaian",
-      "address": { "@type": "PostalAddress", "addressLocality": "Accra", "addressCountry": "GH" }
-    }
-    </script>
+    <script type="application/ld+json" set:html={JSON.stringify(personLd)} />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -93,7 +94,11 @@ const ogImage = new URL(image, Astro.site);
       />
     </noscript>
 
+    <!-- Machine-readable version for AI agents -->
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt" />
+
     <title>{title}</title>
+    <slot name="head" />
   </head>
   <body>
     <a href="#main-content" class="skip-link">Skip to content</a>

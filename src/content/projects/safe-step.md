@@ -12,8 +12,6 @@ metrics:
   - { label: "Feedback Mode", value: "Voice + Spatial" }
   - { label: "Platform", value: "Mobile (Flutter)" }
   - { label: "Inference", value: "On-device" }
-links:
-  github: "https://github.com/Strange-Philip/Opto_dip"
 recognition:
   - "Core research project — University of Cape Coast"
   - "Presented at academic review sessions"
