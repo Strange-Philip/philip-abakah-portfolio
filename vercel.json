@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/projects/b2N0LXJldG",
+      "destination": "/projects/oct-retinal-segmentation",
+      "permanent": true
+    }
+  ]
+}
