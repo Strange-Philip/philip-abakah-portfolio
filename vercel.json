@@ -1,6 +1,11 @@
 {
   "redirects": [
     {
+      "source": "/sitemap.xml",
+      "destination": "/sitemap-index.xml",
+      "permanent": true
+    },
+    {
       "source": "/projects/b2N0LXJldG",
       "destination": "/projects/oct-retinal-segmentation",
       "permanent": true
